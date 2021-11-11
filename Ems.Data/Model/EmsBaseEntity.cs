@@ -12,6 +12,7 @@ namespace Ems.Data.Model
         [Key]
         public int Id { get; set; }
         public bool Fix { get; set; }
+        public int CreatedBy { get; set; }
         public DateTime CreateTime { get; set; } = DateTime.Now;
     }
 }

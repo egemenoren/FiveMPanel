@@ -19,6 +19,7 @@ namespace Ems.Data.Data
         public DbSet<RegisterInsurance> RegisterInsurance { get; set; }
         public DbSet<Processes> Processes { get; set; }
         public DbSet<Ranks> Ranks { get; set; }
-        public DbSet<Doctors> Doctors { get; set; }
+        public DbSet<Users> Users { get; set; }
+        public DbSet<Jobs> Jobs { get; set; }
     }
 }

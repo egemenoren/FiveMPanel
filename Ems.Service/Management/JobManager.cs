@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace Ems.Service.Management
 {
-    public class DoctorManager:BaseManager<Users>
+    public class JobManager:BaseManager<Jobs>
     {
     }
 }

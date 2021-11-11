@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Management\BaseManager.cs" />
     <Compile Include="Management\DoctorManager.cs" />
+    <Compile Include="Management\JobManager.cs" />
     <Compile Include="Management\RankManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

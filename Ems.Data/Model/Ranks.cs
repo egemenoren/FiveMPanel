@@ -8,7 +8,7 @@ namespace Ems.Data.Model
 {
     public class Ranks : EmsBaseEntity
     {
-        public string Job { get; set; }
+        public int JobId { get; set; }
         public string RankName { get; set; }
         public bool AccessJobPanel { get; set; }
         public bool AccessManagementPanel { get; set; }

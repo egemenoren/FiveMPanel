@@ -101,8 +101,13 @@
     <Compile Include="Migrations\202111071451518_m21.designer.cs">
       <DependentUpon>202111071451518_m21.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202111112025594_jobs.cs" />
+    <Compile Include="Migrations\202111112025594_jobs.designer.cs">
+      <DependentUpon>202111112025594_jobs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Model\Doctors.cs" />
+    <Compile Include="Model\Jobs.cs" />
+    <Compile Include="Model\Users.cs" />
     <Compile Include="Model\EmsBaseEntity.cs" />
     <Compile Include="Model\Examination.cs" />
     <Compile Include="Model\Insurance.cs" />
@@ -127,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111071451518_m21.resx">
       <DependentUpon>202111071451518_m21.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111112025594_jobs.resx">
+      <DependentUpon>202111112025594_jobs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,6 @@
 ﻿using Ems.Data.Model;
 using Ems.Service.Management;
+using Ems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,22 @@ namespace Ems.Controllers
     {
         // GET: Management
         private RankManager rankManager;
-        public ActionResult AddUser()
+        private JobManager jobManager;
+        [HttpPost]
+        public ActionResult AddUser(Users user)
         {
             return View();
+        }
+        public ActionResult AddUser()
+        {
+            jobManager = new JobManager();
+            rankManager = new RankManager();
+            AddUserViewModel addUserViewModel = new AddUserViewModel();
+            var rankList = rankManager.GetAll();
+            var jobList = jobManager.GetAll();
+            addUserViewModel.Jobs = jobList;
+            addUserViewModel.Ranks = rankList;
+            return View(addUserViewModel);
         }
         public ActionResult RankManagement()
         {
@@ -30,7 +44,9 @@ namespace Ems.Controllers
         public JsonResult GetRanks(string Job)
         {
             rankManager = new RankManager();
-            var jobList = Job != "" ? rankManager.GetAllByParameter(x => x.Job == Job) : rankManager.GetAll();
+            jobManager = new JobManager();
+            var jobEntity = jobManager.GetAllByParameter(x => x.JobName == Job).FirstOrDefault();
+            var jobList = Job != "" ? rankManager.GetAllByParameter(x => x.JobId == jobEntity.Id) : rankManager.GetAll();
             return Json(jobList,JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -40,7 +56,9 @@ namespace Ems.Controllers
             {
 
                 rankManager = new RankManager();
-                if (rankManager.CheckIfExists(x => x.Job == Job && x.RankName == RankName))
+                jobManager = new JobManager();
+                var jobEntity = jobManager.GetAllByParameter(x => x.JobName == Job).FirstOrDefault();
+                if (rankManager.CheckIfExists(x => x.JobId == jobEntity.Id && x.RankName == RankName))
                 {
                     ViewBag.ErrMsg = "Bu departmana ait " + RankName + " isimli rank zaten mevcut.";
                     return View();
@@ -48,7 +66,7 @@ namespace Ems.Controllers
                 rankManager.Add(new Data.Model.Ranks
                 {
                     RankName = RankName,
-                    Job = Job,
+                    JobId = jobEntity.Id,
                     AccessJobPanel = AccessJobPanel,
                     AccessManagementPanel = AccessManagementPanel
                 });
