@@ -1,0 +1,132 @@
+﻿@model IEnumerable<Ems.Data.Model.Ranks>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-11 mt-3 ">
+            <a href="/Management/AddRank"><input value="Yeni Rank Ekle" class="btn btn-success float-right"></a>
+        </div>
+    </div>
+    <div class="row offset-1 d-flex justify-content-start">
+        <div class="col-md-12">
+            <div class="btn btn-outline-danger job" value="Doktor">
+                Doktor
+            </div>
+            <div class="btn btn-outline-info job" value="Polis">
+                Polis
+            </div>
+            <div class="btn btn-outline-warning job" value="Sheriff">
+                Sheriff
+            </div>
+            <div class="btn btn-outline-primary job" value="State Polis">
+                State
+            </div>
+            <div class="btn btn-outline-success job" value="">
+                Tümü
+            </div>
+
+        </div>
+            
+        </div>
+    
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10 mt-3">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Rank Sıralaması</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th colspan="4">Rank Adı</th>
+                                <th colspan="2">Meslek</th>
+                                <th colspan="2">Meslek Paneli</th>
+                                <th colspan="2">Yönetim Paneli</th>
+                                <th colspan="2">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            @foreach (var item in Model)
+                            {
+                                var AccessJobPanel = item.AccessJobPanel ? "Erişimi Var" : "Erişimi Yok";
+                                var AccessManagementPanel = item.AccessManagementPanel ? "Erişimi Var" : "Erişimi Yok";
+                                <tr>
+                                    <td colspan="4">@item.RankName</td>
+                                    <td colspan="2">@item.Job</td>
+                                    <td colspan="2">@AccessJobPanel</td>
+                                    <td colspan="2">@AccessManagementPanel</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <div class="btn btn-info"><i class="fas fa-eye"></i></div>
+                                            <div class="btn btn-danger"><i class="fas fa-trash"></i></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<script>
+
+    $(".job").on("click", function (event) {
+        var res = $(this).serialize();
+        var jobName = $(this).attr("value");
+        var job = "?job=" + jobName;
+        if (job == "Tümü")
+            job = "";
+        var content = "";
+        console.log("slm");
+        $.ajax({
+            url: '/Management/GetRanks'+ job,
+            type: 'GET',
+            data: res,
+            dataType: 'json',
+            success: function (response) {
+                $.each(response, function (i, v) {
+                    var AccessToManagementPanel = v.AccessManagementPanel ? "Erişimi Var" : "Erişimi Yok";
+                    var AccessToJobPanel = v.AccessJobPanel ? "Erişimi Var" : "Erişimi Yok";
+                    $('#tableBody').html("");
+                    content += '<tr>';
+                    content += '<td colspan="4">' + v.RankName + '</td>';
+                    content += '<td colspan="2">' + v.Job + '</td>';
+                    content += '<td colspan="2">' + AccessToJobPanel + '</td>';
+                    content += '<td colspan="2">' + AccessToManagementPanel + '</td>';
+                    content += '<td colspan="2">';
+                    content += '<div class="btn-group btn-group-sm">';
+                    content += '<div class="btn btn-info"><i class="fas fa-eye"></i></div>';
+                    content += ' <div class="btn btn-danger"><i class="fas fa-trash"></i></div>';
+                    content += '</div>';
+                    content += ' </td>';
+                    content += ' </tr>';
+                    $('#tableBody').html(content);
+                    $('.card-title').text(jobName + " Rank Sıralaması");
+                })
+
+            }
+
+        });
+
+    });
+
+</script>
+

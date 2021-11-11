@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "AddRank";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-8">
+
+                    <form action="/Management/AddRank" method="post">
+
+
+                        <!-- SELECT2 EXAMPLE -->
+                        <div class="card card-success mt-5">
+                            <div class="card-header">
+                                <h3 class="card-title">Select2 (Default Theme)</h3>
+
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Rank Adı</label>
+                                    <input type="text" class="form-control" id="exampleInputEmail1" name="RankName" placeholder="Rank Adı Girin" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Minimal</label>
+                                    <select class="form-control select2" name="Job" width="100%">
+                                        <option selected="selected">Doktor</option>
+                                        <option>Polis</option>
+                                        <option>Sheriff</option>
+                                        <option>State Polis</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                        <input type="checkbox" value="true" class="custom-control-input" name="AccessJobPanel" id="AccessJobPanel">
+                                        <label class="custom-control-label" for="AccessJobPanel">Meslek Yönetim Paneline Erişim</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-switch custom-switch-off-gray-dark custom-switch-on-success">
+                                        <input type="checkbox" class="custom-control-input" value="true" name="AccessManagementPanel" id="AccessManagementPanel">
+                                        <label class="custom-control-label" for="AccessManagementPanel">Yönetim Paneli Erişimi. (Bunu sadece Genel sorumlulara veriniz.)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-info">Kaydet</button>
+                                <div class="btn btn-danger"><a href="/Home/Index" style="color:white">Vazgeç</a></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+    @if(ViewBag.ErrMsg != null)
+            {
+                <script>
+                    swal.fire
+                </script>
+            }
+
+
