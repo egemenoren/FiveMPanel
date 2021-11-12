@@ -18,31 +18,31 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         </div>
-                        <input type="email" class="form-control" placeholder="Email">
+                        <input type="email" class="form-control" placeholder="Email" required>
                     </div>
                     <div class="input-group mb-3">
-                        <div class="input-group-prepend">
+                        <div class="input-group-prepend" required>
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input type="password" class="form-control" placeholder="Şifre">
+                        <input type="password" class="form-control" placeholder="Şifre" required> 
                     </div>
 
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" required placeholder="Discord ID">
                         <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-check"></i></span>
+                            <span class="input-group-text"><i class="fab fa-discord"></i></span>
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" required placeholder="Steam Hex">
                         <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                            <span class="input-group-text"><i class="fab fa-steam"></i></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Minimal</label>
+                        <label>Meslek</label>
                         <select id="jobSelect2" class="form-control select2" style="width: 100%;">
-                            <option selected="selected">Lütfen Birini Seçiniz.</option>
+                            <option id="selectedDefault" selected="selected">Lütfen Birini Seçiniz.</option>
                             @foreach (var item in Model.Jobs)
                             {
                                 <option>@item.JobName</option>
@@ -50,10 +50,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Minimal</label>
+                        <label>Rank</label>
                         <select class="form-control select2" id="rankSelect2" style="width: 100%;">
                             <option selected="selected">Lütfen Önce Meslek Seçiniz!</option>
-
                         </select>
                     </div>
 
@@ -65,25 +64,42 @@
     </div>
 </div>
 <script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-
-
-    $("#jobSelect2").on("change", function (e) {
-        if ($("#jobSelect2").find(":selected2").val() != "Lütfen Birini Seçiniz.") {
-            var jobName = $("#jobSelect2").find(':selected').val();
+    $(document).ready(function () {
+        
+        $("#jobSelect2").on('select2:select', function (e) {
+            $("#selectedDefault").remove();
+            var job = $(this).val();
             $('#rankSelect2').select2({
                 ajax: {
-                    url: '/Management/GetRanks?Job=' + jobName,
-                    processResults: function (data) {
-                        console.log(data);
-                        // Transforms the top-level key of the response object from 'items' to 'results'
+                    url: '/Management/GetRanks?job=' + job,
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
                         return {
-                            results: data.RankName
+                            query: params.term
                         };
-                    }
-                }
+                    },
+                    processResults: function (data) {
+
+
+                        var result = $.map(data, function (item) {
+
+                            return {
+                                id: item.Id,
+                                text: item.RankName
+                            }
+                        });
+                        return { results: result };
+                    },
+                },
             });
-        }
+            $("#select2-rankSelect2-container").text("Seçim Yapınız!");
+        });
+    });
+    
+
 
 
 

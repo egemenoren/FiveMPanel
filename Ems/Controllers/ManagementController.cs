@@ -30,6 +30,14 @@ namespace Ems.Controllers
             addUserViewModel.Ranks = rankList;
             return View(addUserViewModel);
         }
+        [HttpGet]
+        public JsonResult RemoveRank(int id)
+        {
+            rankManager = new RankManager();
+            rankManager.Remove(id);
+            var newRankList = rankManager.GetAll();
+            return Json(newRankList, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult RankManagement()
         {
             rankManager = new RankManager();
@@ -45,9 +53,14 @@ namespace Ems.Controllers
         {
             rankManager = new RankManager();
             jobManager = new JobManager();
+            if (Job == null)
+            {
+                var rankListAll = rankManager.GetAll();
+                return Json(rankListAll, JsonRequestBehavior.AllowGet);
+            }
             var jobEntity = jobManager.GetAllByParameter(x => x.JobName == Job).FirstOrDefault();
-            var jobList = Job != "" ? rankManager.GetAllByParameter(x => x.JobId == jobEntity.Id) : rankManager.GetAll();
-            return Json(jobList,JsonRequestBehavior.AllowGet);
+            var rankList = rankManager.GetAllByParameter(x => x.JobId == jobEntity.Id);
+            return Json(rankList,JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult AddRank(string RankName, string Job, bool AccessJobPanel = false, bool AccessManagementPanel = false)

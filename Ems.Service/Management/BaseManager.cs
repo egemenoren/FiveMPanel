@@ -39,7 +39,11 @@ namespace Ems.Service.Management
         public List<T> GetAllByParameter(Expression<Func<T,bool>> Filter = null)
         {
             if (Filter != null)
-                return repo.Select(Filter).ToList();
+            {
+                var list = repo.Select(Filter).ToList();
+                return list;
+            }
+                
             return null;
         }
         public bool CheckIfExists(Expression<Func<T,bool>> Filter = null)
@@ -53,6 +57,11 @@ namespace Ems.Service.Management
                 return false;
             }
             return false;
+        }
+        public void Remove(int id)
+        {
+            repo.Remove(id);
+            repo.SaveChanges();
         }
     }
 }
