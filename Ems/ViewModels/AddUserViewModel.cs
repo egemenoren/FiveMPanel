@@ -7,9 +7,16 @@ using System.Web;
 namespace Ems.ViewModels
 {
     public class AddUserViewModel
-    {   public Users User { get; set; }
+    {
         public List<Jobs> Jobs { get; set; }
-        public List<Ranks> Ranks { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public ulong DiscordId { get; set; }
+        public string SteamHex { get; set; }
+        public bool AccessManagementPanel { get; set; }
+        public int JobId { get; set; }
+        public int RankId { get; set; }
+
 
     }
 }

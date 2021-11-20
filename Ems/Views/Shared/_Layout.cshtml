@@ -223,7 +223,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="~/Content/AdminLTE/index2.html" class="nav-link">
+                                    <a href="/Management/UserManagement" class="nav-link">
                                         <i class="far fa-circle nav-icon text-teal"></i>
                                         <p>Kullanıcı Yönetimi</p>
                                     </a>
@@ -586,25 +586,27 @@
     <!-- Page specific script -->
     @if (ViewBag.ErrMsg != null)
     {
-        <script>
+<script>
             Swal.fire({
                 title: 'Hoop!',
                 text: '@ViewBag.ErrMsg',
                 icon: 'error',
-                confirmButtonText: 'Ah be abi'
+                confirmButtonText: 'Ah be abi',
+                html: '@ViewBag.ErrMsg'
             })
-        </script>
+</script>
     }
     @if (ViewBag.Success != null)
     {
-        <script>
+<script>
             Swal.fire({
                 title: 'Başarılı',
                 text: '@ViewBag.Success',
                 icon: 'success',
-                confirmButtonText: 'Güzel'
+                confirmButtonText: 'Güzel',
+                html: '@ViewBag.Success'
             })
-        </script>
+</script>
     }
     <script>
 

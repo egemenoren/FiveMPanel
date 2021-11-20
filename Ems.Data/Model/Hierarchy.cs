@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Ems.Data.Model
 {
-    public class Ranks : EmsBaseEntity
+    public class Hierarchy:EmsBaseEntity
     {
         public int JobId { get; set; }
-        public string RankName { get; set; }
-        public bool AccessJobPanel { get; set; }
+        public short HierarchyRank { get; set; }
+        public int RankId { get; set; }
     }
 }

@@ -105,7 +105,20 @@
     <Compile Include="Migrations\202111112025594_jobs.designer.cs">
       <DependentUpon>202111112025594_jobs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202111191758156_rank--hierarchy.cs" />
+    <Compile Include="Migrations\202111191758156_rank--hierarchy.designer.cs">
+      <DependentUpon>202111191758156_rank--hierarchy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111201155562_m1.cs" />
+    <Compile Include="Migrations\202111201155562_m1.designer.cs">
+      <DependentUpon>202111201155562_m1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111201157316_discord.cs" />
+    <Compile Include="Migrations\202111201157316_discord.designer.cs">
+      <DependentUpon>202111201157316_discord.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\Hierarchy.cs" />
     <Compile Include="Model\Jobs.cs" />
     <Compile Include="Model\Users.cs" />
     <Compile Include="Model\EmsBaseEntity.cs" />
@@ -135,6 +148,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111112025594_jobs.resx">
       <DependentUpon>202111112025594_jobs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111191758156_rank--hierarchy.resx">
+      <DependentUpon>202111191758156_rank--hierarchy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111201155562_m1.resx">
+      <DependentUpon>202111201155562_m1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111201157316_discord.resx">
+      <DependentUpon>202111201157316_discord.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

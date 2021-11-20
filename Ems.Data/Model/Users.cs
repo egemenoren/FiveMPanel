@@ -11,9 +11,11 @@ namespace Ems.Data.Model
         public string NameSurname { get; set; }
         public string Mail { get; set; }
         public string Password { get; set; }
-        public ulong DiscordId { get; set; }
+        public long DiscordId { get; set; }
         public string HexId { get; set; }
         public int RankId { get; set; }
+        public int JobId { get; set; }
+        public bool AccessManagementPanel { get; set; } = false;
         public Status Status { get; set; } = Status.Active;
     }
 }

@@ -11,42 +11,43 @@ namespace Ems.Service.Management
 {
     public abstract class BaseManager<T> where T:EmsBaseEntity
     {
-        private readonly GenericRepository<T> repo;
+        internal readonly GenericRepository<T> repo;
         public BaseManager()
         {
             repo = new GenericRepository<T>();
         }
-        public T GetById(int Id)
+        public virtual T GetById(int Id)
         {
             var entity = repo.Find(Id);
             return entity;
         }
-        public void Add(T Entity)
+        public virtual void Add(T Entity)
         {
             repo.Insert(Entity);
             repo.SaveChanges();
         }
-        public void Update(T Entity)
+        public virtual void Update(T Entity)
         {
             repo.Update(Entity);
             repo.SaveChanges();
         }
-        public List<T> GetAll()
+        public virtual List<T> GetAll()
         {
             var listEntities = repo.SelectAll();
             return listEntities;
         }
-        public List<T> GetAllByParameter(Expression<Func<T,bool>> Filter = null)
+        public virtual void Remove(int Id)
+        {
+            repo.Remove(Id);
+            repo.SaveChanges();
+        }
+        public virtual List<T> GetAllByParameter(Expression<Func<T,bool>> Filter = null)
         {
             if (Filter != null)
-            {
-                var list = repo.Select(Filter).ToList();
-                return list;
-            }
-                
+                return repo.Select(Filter).ToList();
             return null;
         }
-        public bool CheckIfExists(Expression<Func<T,bool>> Filter = null)
+        public virtual bool CheckIfExists(Expression<Func<T,bool>> Filter = null)
         {
             if(Filter != null)
             {
@@ -57,11 +58,6 @@ namespace Ems.Service.Management
                 return false;
             }
             return false;
-        }
-        public void Remove(int id)
-        {
-            repo.Remove(id);
-            repo.SaveChanges();
         }
     }
 }

@@ -21,5 +21,6 @@ namespace Ems.Data.Data
         public DbSet<Ranks> Ranks { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Jobs> Jobs { get; set; }
+        public DbSet<Hierarchy> Hierarchies { get; set; }
     }
 }
