@@ -12,5 +12,6 @@ namespace Ems.ViewModels
         public string RankName { get; set; }
         public bool AccessJobPanel { get; set; }
         public string JobName { get; set; }
+        public short HierarchyNo { get; set; }
     }
 }

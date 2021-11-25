@@ -8,39 +8,40 @@
 <div class="content-wrapper">
     <div class="d-flex justify-content-center">
         <div class="col-md-6 mt-5">
-            <form action="/Management/AddUser" method="post">
+            <form action="/Management/EditUser" method="post">
                 <div class="card card-success">
                     <div class="card-header">
-                        <h3 class="card-title">Kullanıcı Ekle</h3>
+                        <h3 class="card-title">Kullanıcı Düzenle</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                             </div>
-                            <input type="text" class="form-control" name="NameSurname" placeholder="Adı Soyadı" required>
+                            <input type="text" class="form-control" value="@Model.NameSurname" name="NameSurname" placeholder="Adı Soyadı" required>
                         </div>
+                        <input type="hidden" value="@Model.Id" name="UserId" />
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             </div>
-                            <input type="email" class="form-control" name="Email" placeholder="Email" required>
+                            <input disabled type="email" class="form-control" value="@Model.Email" name="Email" placeholder="Email" required>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" class="form-control" name="Password" placeholder="Şifre" required>
+                            <input disabled type="password" class="form-control" value="@Model.Password" name="Password" placeholder="Şifre" required>
                         </div>
 
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="DiscordId" placeholder="Discord ID" required>
+                            <input type="text" class="form-control" name="DiscordId" value="@Model.DiscordId" placeholder="Discord ID" required>
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fab fa-discord"></i></span>
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="SteamHex" placeholder="Steam Hex" required>
+                            <input type="text" class="form-control" name="HexId" value="@Model.SteamHex" placeholder="Steam Hex" required>
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fab fa-steam"></i></span>
                             </div>
@@ -48,7 +49,7 @@
                         <div class="form-group">
                             <label>Meslek</label>
                             <select id="jobSelect" class="form-control select2" name="JobId" style="width: 100%;">
-                                <option selected="selected">Lütfen Birini Seçiniz.</option>
+                                <option selected="selected" value="@Model.JobId">@Model.Jobs.Where(x => x.Id == Model.JobId).FirstOrDefault().JobName</option>
                                 @foreach (var item in Model.Jobs)
                                 {
                                     <option value="@item.Id">@item.JobName</option>
@@ -58,12 +59,12 @@
                         <div class="form-group">
                             <label>Rank</label>
                             <select class="form-control select2" id="rankSelect2" name="RankId" style="width: 100%;">
-                                <option selected="selected">Lütfen Önce Meslek Seçiniz!</option>
+                                <option selected="selected" value="@Model.RankId">@Model.RankName</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                <input type="checkbox" value="true" class="custom-control-input" name="AccessManagementPanel" id="AccessManagementPanel">
+                                <input type="checkbox" value="true" checked="@Model.AccessManagementPanel" class="custom-control-input" name="AccessManagementPanel" id="AccessManagementPanel">
                                 <label class="custom-control-label" for="AccessManagementPanel">Yönetim Paneline Erişim</label>
                             </div>
                         </div>
@@ -76,7 +77,7 @@
                         <div class="btn btn-danger"><a href="/Home/Index" style="color:white">Vazgeç</a></div>
                     </div>
                 </div>
-                </form>
+            </form>
         </div>
     </div>
 </div>
@@ -112,7 +113,32 @@
             });
         })
 
+        $("#jobSelect").on('select2:opening', function () {
+            $("option[selected='selected']").remove();
 
+            $("#rankSelect2").val(null);
+            $("option[data-select2-id='10']").remove();
+            var jobName = $('span[id="select2-jobSelect-container"]').attr("title");
+            jobName = jobName == "Lütfen Birini Seçiniz." ? "" : jobName
+            $('#rankSelect2').select2({
+                ajax: {
+                    url: '/Management/GetRanks?Job=' + jobName,
+                    dataType: 'json',
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                console.log(data);
+                                return {
+                                    text: item.RankName,
+                                    id: item.Id
+
+                                }
+                            })
+                        };
+                    }
+                }
+            });
+        })
     });
 
 

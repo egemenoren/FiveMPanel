@@ -2344,6 +2344,8 @@
     <Content Include="Views\Management\RankManagement.cshtml" />
     <Content Include="Views\Management\AddRank.cshtml" />
     <Content Include="Views\Management\UserManagement.cshtml" />
+    <Content Include="Views\Management\EditRank.cshtml" />
+    <Content Include="Views\Management\EditUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

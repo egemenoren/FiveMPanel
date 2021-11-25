@@ -14,6 +14,14 @@ namespace Ems.Controllers
         private RankManager rankManager;
         private JobManager jobManager;
         private UserManager userManager;
+        private HierarchyManager hierarchyManager;
+        public ManagementController()
+        {
+            userManager = new UserManager();
+            jobManager = new JobManager();
+            rankManager = new RankManager();
+            hierarchyManager = new HierarchyManager();
+        }
         [HttpPost]
         public ActionResult AddUser(string Email, string NameSurname, string Password, long DiscordId, string SteamHex, int JobId, int RankId, bool AccessManagementPanel = false)
         {
@@ -73,28 +81,38 @@ namespace Ems.Controllers
         }
         public ActionResult UserManagement()
         {
-            rankManager = new RankManager();
-            jobManager = new JobManager();
-            userManager = new UserManager();
-            var userList = userManager.GetAll();
             List<UserManagementViewModel> listModel = new List<UserManagementViewModel>();
-            foreach (var item in userList)
+            try
             {
-                var rankEntity = rankManager.GetAllByParameter(x => x.Id == item.RankId).FirstOrDefault();
-                var jobEntity = jobManager.GetAllByParameter(x => x.Id == rankEntity.JobId).FirstOrDefault();
-                UserManagementViewModel model = new UserManagementViewModel
+                rankManager = new RankManager();
+                jobManager = new JobManager();
+                userManager = new UserManager();
+                var userList = userManager.GetAll();
+
+                foreach (var item in userList)
                 {
-                    Id = item.Id,
-                    NameSurname = item.NameSurname,
-                    AccessJobPanel = rankEntity.AccessJobPanel,
-                    JobId = jobEntity.Id,
-                    RankName = rankEntity.RankName,
-                    RankId = rankEntity.Id,
-                    JobName = jobEntity.JobName
-                };
-                listModel.Add(model);
+                    var rankEntity = rankManager.GetAllByParameter(x => x.Id == item.RankId).FirstOrDefault();
+                    var jobEntity = jobManager.GetAllByParameter(x => x.Id == rankEntity.JobId).FirstOrDefault();
+                    UserManagementViewModel model = new UserManagementViewModel
+                    {
+                        Id = item.Id,
+                        NameSurname = item.NameSurname,
+                        AccessManagement = item.AccessManagementPanel,
+                        JobId = jobEntity.Id,
+                        RankName = rankEntity.RankName,
+                        RankId = rankEntity.Id,
+                        JobName = jobEntity.JobName
+                    };
+                    listModel.Add(model);
+                }
+                return View(listModel);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrMsg = ex.Message;
             }
             return View(listModel);
+
 
         }
         public ActionResult AddRank()
@@ -127,9 +145,11 @@ namespace Ems.Controllers
             {
                 foreach (var item in jobList)
                 {
+                    var rankId = rankManager.GetById(item.Id).Id;
                     var jobName = jobManager.GetAllByParameter(x => x.Id == item.JobId).FirstOrDefault().JobName;
                     modelList.Add(new RankManagementViewModel
                     {
+                        Id = rankId,
                         JobName = jobName,
                         AccessJobPanel = item.AccessJobPanel,
                         RankName = item.RankName
@@ -140,7 +160,7 @@ namespace Ems.Controllers
             return Json(modelList, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult AddRank(string HierarchyNo, string RankName, string Job, bool AccessJobPanel = false)
+        public ActionResult AddRank(short HierarchyNo, string RankName, string Job, bool AccessJobPanel = false)
         {
             try
             {
@@ -158,6 +178,13 @@ namespace Ems.Controllers
                     RankName = RankName,
                     JobId = jobEntity.Id,
                     AccessJobPanel = AccessJobPanel,
+                });
+                var rankEntity = rankManager.GetByParameter(x => x.RankName == RankName);
+                hierarchyManager.Add(new Hierarchy
+                {
+                    HierarchyRank = HierarchyNo,
+                    JobId = jobEntity.Id,
+                    RankId = rankEntity.Id
                 });
                 ViewBag.Success = "Rank Başarıyla Eklendi!";
             }
@@ -184,28 +211,40 @@ namespace Ems.Controllers
         }
         public JsonResult GetUsersByJob(string JobName)
         {
-            userManager = new UserManager();
-            jobManager = new JobManager();
-            rankManager = new RankManager();
-
-            var jobEntity = jobManager.GetAllByParameter(x => x.JobName == JobName).FirstOrDefault();
-            var userList = userManager.GetAllByParameter(x => x.JobId == jobEntity.Id);
             List<UserManagementViewModel> model = new List<UserManagementViewModel>();
-            foreach (var item in userList)
+            try
             {
-                var rankEntity = rankManager.GetAllByParameter(x => x.Id == item.RankId).FirstOrDefault();
-                model.Add(new UserManagementViewModel
+                userManager = new UserManager();
+                jobManager = new JobManager();
+                rankManager = new RankManager();
+
+                var jobEntity = jobManager.GetAllByParameter(x => x.JobName == JobName).FirstOrDefault();
+                var userList = jobEntity != null ? userManager.GetAllByParameter(x => x.JobId == jobEntity.Id) : userManager.GetAll();
+
+                foreach (var item in userList)
                 {
-                    Id = item.Id,
-                    JobId = jobEntity.Id,
-                    JobName = jobEntity.JobName,
-                    RankId = rankEntity.Id,
-                    RankName = rankEntity.RankName,
-                    AccessJobPanel = rankEntity.AccessJobPanel,
-                    NameSurname = item.NameSurname
-                });
+                    var rankEntity = rankManager.GetAllByParameter(x => x.Id == item.RankId).FirstOrDefault();
+                    jobEntity = jobManager.GetAllByParameter(x => x.Id == rankEntity.JobId).FirstOrDefault();
+                    model.Add(new UserManagementViewModel
+                    {
+                        Id = item.Id,
+                        JobId = jobEntity.Id,
+                        JobName = jobEntity.JobName,
+                        RankId = rankEntity.Id,
+                        RankName = rankEntity.RankName,
+                        AccessManagement = item.AccessManagementPanel,
+                        NameSurname = item.NameSurname
+                    });
+                }
+                return Json(model, JsonRequestBehavior.AllowGet);
             }
-            return Json(model, JsonRequestBehavior.AllowGet);
+            catch (Exception ex)
+            {
+                ViewBag.ErrMsg = ex.Message;
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+
+
         }
         [HttpGet]
         public JsonResult RemoveRank(int id)
@@ -213,6 +252,100 @@ namespace Ems.Controllers
             rankManager = new RankManager();
             rankManager.Remove(id);
             return Json("Başarılı", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult EditRank(int Id)
+        {
+            var rankEntitiy = rankManager.GetById(Id);
+            var jobEntity = jobManager.GetById(rankEntitiy.JobId);
+            var hierarchyNo = hierarchyManager.GetByParameter(x => x.RankId == rankEntitiy.Id).HierarchyRank;
+            RankManagementViewModel model = new RankManagementViewModel
+            {
+                Id = rankEntitiy.Id,
+                RankName = rankEntitiy.RankName,
+                AccessJobPanel = rankEntitiy.AccessJobPanel,
+                JobName = jobEntity.JobName,
+                HierarchyNo = hierarchyNo
+
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditRank(int RankId, string RankName, short hierarchyNo, string Job, bool AccessJobPanel = false)
+        {
+            try
+            {
+                var rankEntity = rankManager.GetByParameter(x => x.Id == RankId);
+                var jobEntity = jobManager.GetByParameter(x => x.JobName == Job);
+                var hierarchyEntity = hierarchyManager.GetByParameter(x => x.RankId == rankEntity.Id);
+                if (hierarchyManager.GetByParameter(x => x.JobId == jobEntity.Id && x.HierarchyRank == hierarchyNo) != null)
+                    throw new Exception(jobEntity.JobName + " Mesleğinde aynı hiyerarşi numarasına sahip bir rank zaten var.");
+                rankEntity.RankName = RankName;
+                rankEntity.AccessJobPanel = AccessJobPanel;
+                rankEntity.JobId = jobEntity.Id;
+                rankManager.Update(rankEntity);
+                hierarchyEntity.RankId = rankEntity.Id;
+                hierarchyEntity.HierarchyRank = hierarchyNo;
+                hierarchyEntity.JobId = jobEntity.Id;
+                hierarchyManager.Update(hierarchyEntity);
+                ViewBag.Success = "Rank Başarıyla Düzenlendi";
+                TempData["Success"] = "Rank Başarıyla Düzenlendi";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrMsg = ex.Message;
+                TempData["ErrMsg"] = ex.Message;
+            }
+
+            return RedirectToAction("RankManagement");
+        }
+
+        public ActionResult EditUser(int Id)
+        {
+            var userEntity = userManager.GetById(Id);
+            var jobList = jobManager.GetAll();
+            var rankName = rankManager.GetById(userEntity.RankId).RankName;
+            AddUserViewModel model = new AddUserViewModel
+            {
+                AccessManagementPanel = userEntity.AccessManagementPanel,
+                DiscordId = (ulong)userEntity.DiscordId,
+                Email = userEntity.Mail,
+                JobId = userEntity.JobId,
+                RankId = userEntity.RankId,
+                Password = userEntity.Password,
+                SteamHex = userEntity.HexId,
+                Jobs = jobList,
+                NameSurname = userEntity.NameSurname,
+                RankName = rankName,
+                Id=Id
+
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditUser(int UserId, long DiscordId,
+            int JobId,int RankId,
+            string HexId,string NameSurname, bool AccessManagementPanel = false)
+        {
+            try
+            {
+                var entityToUpdate = userManager.GetById(UserId);
+                entityToUpdate.AccessManagementPanel = AccessManagementPanel;
+                entityToUpdate.DiscordId = DiscordId;
+                entityToUpdate.HexId = HexId;
+                entityToUpdate.JobId = JobId;
+                entityToUpdate.NameSurname = NameSurname;
+                entityToUpdate.RankId = RankId;
+                userManager.Update(entityToUpdate);
+                ViewBag.Success = "Rank Başarıyla Düzenlendi";
+                TempData["Success"] = "Rank Başarıyla Düzenlendi";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrMsg = ex.Message;
+                TempData["ErrMsg"] = ex.Message;
+            }
+
+            return RedirectToAction("UserManagement");
         }
     }
 }

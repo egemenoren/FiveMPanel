@@ -13,6 +13,6 @@ namespace Ems.ViewModels
         public string JobName { get; set; }
         public string RankName { get; set; }
         public int RankId { get; set; }
-        public bool AccessJobPanel { get; set; }
+        public bool AccessManagement { get; set; }
     }
 }

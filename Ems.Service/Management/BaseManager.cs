@@ -21,6 +21,13 @@ namespace Ems.Service.Management
             var entity = repo.Find(Id);
             return entity;
         }
+        public virtual T GetByParameter(Expression<Func<T,bool>> Filter= null) 
+        {
+            if (Filter != null)
+                return repo.Select(Filter).FirstOrDefault();
+            return null;
+
+        }
         public virtual void Add(T Entity)
         {
             repo.Insert(Entity);
