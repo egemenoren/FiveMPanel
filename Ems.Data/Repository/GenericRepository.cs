@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Ems.Data.Repository
 {
-    public class GenericRepository<T>:IGenericRepository<T> where T:EmsBaseEntity
+    public class GenericRepository<T>:IGenericRepository<T> where T:class
     {
         private EmsContext _context;
         private DbSet<T> _dbSet;

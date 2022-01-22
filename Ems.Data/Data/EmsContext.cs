@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using Ems.Data.Model.Log;
 
 namespace Ems.Data.Data
 {
@@ -22,5 +23,8 @@ namespace Ems.Data.Data
         public DbSet<Users> Users { get; set; }
         public DbSet<Jobs> Jobs { get; set; }
         public DbSet<Hierarchy> Hierarchies { get; set; }
+        public DbSet<MainMenus> MainMenus { get; set; }
+        public DbSet<MenuPermissions> MenuPermissions { get; set; }
+        public DbSet<Logs> Logs { get; set; }
     }
 }

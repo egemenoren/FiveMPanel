@@ -1,0 +1,737 @@
+﻿@model IEnumerable<Ems.ViewModels.SubMenusViewModel>
+
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+        with font-awesome or any other icon font library -->
+        @if (Session["MenuPermission"] != null)
+        {
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-user-lock"></i>
+                    <p>
+                        Yönetim Paneli
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/Management/AddUser" class="nav-link">
+                            <i class="far fa-circle nav-icon text-teal"></i>
+                            <p>Kullanıcı Ekle</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Management/RankManagement" class="nav-link">
+                            <i class="far fa-circle nav-icon text-teal"></i>
+                            <p>Rank Yönetimi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Management/UserManagement" class="nav-link">
+                            <i class="far fa-circle nav-icon text-teal"></i>
+                            <p>Kullanıcı Yönetimi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Content/AdminLTE/index3.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-teal"></i>
+                            <p>Departman Yönetimi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Content/AdminLTE/index3.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-teal"></i>
+                            <p>İstatistikler</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-ambulance"></i>
+                    <p>
+                        EMS Yönetim
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="../layout/top-nav.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-danger"></i>
+                            <p>Doktorlar</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../layout/top-nav-sidebar.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-danger"></i>
+                            <p>Doktor İstatistikleri</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../layout/boxed.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-danger"></i>
+                            <p>Rütbeler</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../layout/fixed-sidebar.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-danger"></i>
+                            <p>Mesai Durumları</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../layout/fixed-sidebar-custom.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-danger"></i>
+                            <p>Fatura Ücretleri</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-building"></i>
+                    <p>
+                        PD Yönetim
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="../charts/chartjs.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-info"></i>
+                            <p>Memurlar</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../charts/flot.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-info"></i>
+                            <p>Memur İstatistikleri</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../charts/inline.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-info"></i>
+                            <p>Rütbeler</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../charts/uplot.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-info"></i>
+                            <p>Mesai Durumları</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../charts/uplot.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-info"></i>
+                            <p>Ceza Tutarları</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-star"></i>
+                    <p>
+                        SD Yönetim
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="../UI/general.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Memurlar</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/icons.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Memur İstatistikleri</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/buttons.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Rütbeler</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/sliders.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Mesai Durumları</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/modals.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Ceza Tutarları</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-flag-usa"></i>
+                    <p>
+                        SP Yönetim
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="../forms/general.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-info"></i>
+                            <p>General Elements</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../forms/advanced.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-info"></i>
+                            <p>Advanced Elements</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../forms/editors.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-info"></i>
+                            <p>Editors</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../forms/validation.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-info"></i>
+                            <p>Validation</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+        else
+        {
+            //if (accessJobPanel == "True")
+            if (true)
+            {
+                if (Session["Menus"] != null)
+                {
+                    var menuList = (List<Ems.ViewModels.SubMenusViewModel>)Session["Menus"];
+                    var groupByMenu = menuList.GroupBy(x=>x.MainMenuName).ToList();
+                    foreach (var item in groupByMenu)
+                    {
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-ambulance"></i>
+                                <p>
+                                    @item.Key
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                @foreach (var menus in menuList)
+                                {
+                                    <li class="nav-item">
+                                        <a href="../layout/top-nav.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-danger"></i>
+                                            <p>@menus.SubMenuName</p>
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
+                        </li>
+                    }
+                }
+                switch ("a")
+                {
+                    case "Doktor":
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-ambulance"></i>
+                                <p>
+                                    EMS Yönetim
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="../layout/top-nav.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-danger"></i>
+                                        <p>Doktorlar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../layout/top-nav-sidebar.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-danger"></i>
+                                        <p>Doktor İstatistikleri</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../layout/boxed.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-danger"></i>
+                                        <p>Rütbeler</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../layout/fixed-sidebar.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-danger"></i>
+                                        <p>Mesai Durumları</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../layout/fixed-sidebar-custom.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-danger"></i>
+                                        <p>Fatura Ücretleri</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        break;
+                    case "Polis":
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-building"></i>
+                                <p>
+                                    PD Yönetim
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="../charts/chartjs.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-info"></i>
+                                        <p>Memurlar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../charts/flot.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-info"></i>
+                                        <p>Memur İstatistikleri</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../charts/inline.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-info"></i>
+                                        <p>Rütbeler</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../charts/uplot.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-info"></i>
+                                        <p>Mesai Durumları</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../charts/uplot.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-info"></i>
+                                        <p>Ceza Tutarları</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        break;
+                    case "Sheriff":
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-star"></i>
+                                <p>
+                                    SD Yönetim
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="../UI/general.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-warning"></i>
+                                        <p>Memurlar</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../UI/icons.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-warning"></i>
+                                        <p>Memur İstatistikleri</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../UI/buttons.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-warning"></i>
+                                        <p>Rütbeler</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../UI/sliders.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-warning"></i>
+                                        <p>Mesai Durumları</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../UI/modals.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-warning"></i>
+                                        <p>Ceza Tutarları</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        break;
+                    case "State Polis":
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-flag-usa"></i>
+                                <p>
+                                    SP Yönetim
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="../forms/general.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-info"></i>
+                                        <p>General Elements</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../forms/advanced.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-info"></i>
+                                        <p>Advanced Elements</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../forms/editors.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-info"></i>
+                                        <p>Editors</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../forms/validation.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-info"></i>
+                                        <p>Validation</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        break;
+                    default: break;
+                }
+
+
+
+
+            }
+        }
+        <li class="nav-header">KULLANICI PANELİ</li>
+        @*@if (checkIfManager == "True")*@
+        @if (true)
+        {
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-stethoscope"></i>
+                    <p>
+                        Doktor Paneli
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="../UI/general.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Hasta Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/icons.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Sigorta Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/buttons.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Sağlık Raporu</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/sliders.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Mesai İşlemleri</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/modals.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Bilgilerim</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-taxi"></i>
+                    <p>
+                        PD Paneli
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="../UI/general.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>El Koyulan Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/icons.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Ceza Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/buttons.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Depoya Konulan Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/sliders.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Mesai İşlemleri</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-hat-cowboy"></i>
+                    <p>
+                        SD Paneli
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="../UI/general.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>El Koyulan Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/icons.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Ceza Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/buttons.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Depoya Konulan Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/sliders.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Mesai İşlemleri</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-user-tie"></i>
+                    <p>
+                        SP Paneli
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="../UI/general.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>El Koyulan Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/icons.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Ceza Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/buttons.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Depoya Konulan Kayıt</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../UI/sliders.html" class="nav-link">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Mesai İşlemleri</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+        else
+        {
+            @*if (hierarchyNo != "-1")
+                {
+                    switch (jobName)
+                    {
+                        case "Doktor":
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-stethoscope"></i>
+                                    <p>
+                                        Doktor Paneli
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="../UI/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Hasta Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/icons.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Sigorta Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/buttons.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Sağlık Raporu</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/sliders.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Mesai İşlemleri</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/modals.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Bilgilerim</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            break;
+                        case "Polis":
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-taxi"></i>
+                                    <p>
+                                        PD Paneli
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="../UI/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>El Koyulan Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/icons.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Ceza Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/buttons.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Depoya Konulan Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/sliders.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Mesai İşlemleri</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            break;
+                        case "Sheriff":
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-hat-cowboy"></i>
+                                    <p>
+                                        SD Paneli
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="../UI/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>El Koyulan Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/icons.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Ceza Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/buttons.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Depoya Konulan Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/sliders.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Mesai İşlemleri</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            break;
+                        case "State Polis":
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-user-tie"></i>
+                                    <p>
+                                        SP Paneli
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="../UI/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>El Koyulan Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/icons.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Ceza Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/buttons.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Depoya Konulan Kayıt</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../UI/sliders.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon text-warning"></i>
+                                            <p>Mesai İşlemleri</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            break;
+                        default: break;
+                    }
+                }*@
+        }
+
+    </ul>
+</nav>

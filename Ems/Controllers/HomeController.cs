@@ -1,4 +1,5 @@
 ﻿using Ems.Service.Management;
+using Ems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Web.Security;
 
 namespace Ems.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private UserManager userManager;
         private RankManager rankManager;
@@ -54,25 +55,45 @@ namespace Ems.Controllers
         {
             userManager = new UserManager();
             var userName = userManager.GetAllByParameter(x => x.Mail == Email).FirstOrDefault();
+            
             if (userName != null)
             {
                 rankManager = new RankManager();
                 jobManager = new JobManager();
+                MenusManager menusManager = new MenusManager();
+                MainMenusManager mainMenusManager = new MainMenusManager();
+                List<SubMenusViewModel> menus = new List<SubMenusViewModel>();
+                var permissions = menusManager.GetPermissions(userName.Id);
+                foreach (var item in permissions)
+                {
+                    var menuName = mainMenusManager.GetById(item.MainMenuId).MenuName;
+                    menus.Add(new SubMenusViewModel
+                    {
+                        Action = item.Action,
+                        Controller = item.Controller,
+                        MainMenuId = item.MainMenuId,
+                        SubMenuId = item.Id,
+                        SubMenuName = item.SubMenu,
+                        MainMenuName = menuName
+                    });
+                }
+                Session["Menus"] = menus;
+
                 HierarchyManager hierarchyManager = new HierarchyManager();
-                Session["User"] = userName;
+                Session["Email"] = userName.Mail;
                 FormsAuthentication.SetAuthCookie(userName.NameSurname, false);
                 HttpCookie userInfo = new HttpCookie("userInfo");
                 userInfo["RankId"] = Server.UrlEncode(userName.RankId.ToString());
                 userInfo["JobId"] = Server.UrlEncode(userName.JobId.ToString());
                 var rankEntity = rankManager.GetAllByParameter(x => x.Id == userName.RankId).FirstOrDefault();
                 var jobEntity = jobManager.GetAllByParameter(x => x.Id == userName.JobId).FirstOrDefault();
-                var hierarchyEntity = hierarchyManager.GetByParameter(x => x.RankId == rankEntity.Id);
-                userInfo["JobName"] = Server.UrlEncode(jobEntity.JobName);
-                userInfo["RankName"] = Server.UrlEncode(rankEntity.RankName);
-                userInfo["AccessJobPanel"] = Server.UrlEncode(rankEntity.AccessJobPanel.ToString());
+                var hierarchyEntity = rankEntity != null ? hierarchyManager.GetByParameter(x => x.RankId == rankEntity.Id) : null;
+                userInfo["JobName"] = Server.UrlEncode( jobEntity != null ? jobEntity.JobName : "NULL");
+                userInfo["RankName"] = Server.UrlEncode(rankEntity != null ? rankEntity.RankName : "NULL");
+                userInfo["AccessJobPanel"] = Server.UrlEncode(rankEntity != null ? rankEntity.AccessJobPanel.ToString() : "NULL" );
                 userInfo["AccessManagementPanel"] = Server.UrlEncode(userName.AccessManagementPanel.ToString());
                 userInfo["NameSurname"] = Server.UrlEncode(userName.NameSurname.ToString());
-                userInfo["HierarchyNo"] = Server.UrlEncode(hierarchyEntity.HierarchyRank.ToString());
+                userInfo["HierarchyNo"] = Server.UrlEncode(hierarchyEntity != null ? hierarchyEntity.HierarchyRank.ToString() : "NULL");
                 userInfo.Expires = DateTime.Now.AddHours(2);
                 HttpContext.Response.SetCookie(userInfo);
 

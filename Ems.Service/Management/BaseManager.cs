@@ -24,9 +24,11 @@ namespace Ems.Service.Management
         public virtual T GetByParameter(Expression<Func<T,bool>> Filter= null) 
         {
             if (Filter != null)
-                return repo.Select(Filter).FirstOrDefault();
+            {
+                var entity = repo.Select(Filter);
+                return entity.First();
+            }
             return null;
-
         }
         public virtual void Add(T Entity)
         {
@@ -58,7 +60,7 @@ namespace Ems.Service.Management
         {
             if(Filter != null)
             {
-                if(repo.Select(Filter).FirstOrDefault() != null)
+                if(repo.Select(Filter) != null)
                 {
                     return true;
                 }

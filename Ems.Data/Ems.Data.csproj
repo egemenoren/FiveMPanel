@@ -117,9 +117,26 @@
     <Compile Include="Migrations\202111201157316_discord.designer.cs">
       <DependentUpon>202111201157316_discord.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201191759490_menuTables.cs" />
+    <Compile Include="Migrations\202201191759490_menuTables.designer.cs">
+      <DependentUpon>202201191759490_menuTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201191801227_menuTablesAdded.cs" />
+    <Compile Include="Migrations\202201191801227_menuTablesAdded.designer.cs">
+      <DependentUpon>202201191801227_menuTablesAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201191944411_keyChanges.cs" />
+    <Compile Include="Migrations\202201191944411_keyChanges.designer.cs">
+      <DependentUpon>202201191944411_keyChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Hierarchy.cs" />
     <Compile Include="Model\Jobs.cs" />
+    <Compile Include="Model\Log\LogLevel.cs" />
+    <Compile Include="Model\Log\Logs.cs" />
+    <Compile Include="Model\Log\LogType.cs" />
+    <Compile Include="Model\MainMenus.cs" />
+    <Compile Include="Model\MenuPermissions.cs" />
     <Compile Include="Model\Users.cs" />
     <Compile Include="Model\EmsBaseEntity.cs" />
     <Compile Include="Model\Examination.cs" />
@@ -157,6 +174,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111201157316_discord.resx">
       <DependentUpon>202111201157316_discord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201191759490_menuTables.resx">
+      <DependentUpon>202201191759490_menuTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201191801227_menuTablesAdded.resx">
+      <DependentUpon>202201191801227_menuTablesAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201191944411_keyChanges.resx">
+      <DependentUpon>202201191944411_keyChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

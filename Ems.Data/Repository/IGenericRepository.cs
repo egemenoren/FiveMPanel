@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ems.Data.Repository
 {
-    public interface IGenericRepository<T> where T: EmsBaseEntity
+    public interface IGenericRepository<T>
     {
         T Find(long EntityId);
         IEnumerable<T> Select(Expression<Func<T, bool>> Filter = null);

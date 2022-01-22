@@ -44,6 +44,8 @@
     <Compile Include="Management\BaseManager.cs" />
     <Compile Include="Management\HierarchyManager.cs" />
     <Compile Include="Management\JobManager.cs" />
+    <Compile Include="Management\MainMenusManager.cs" />
+    <Compile Include="Management\MenusManager.cs" />
     <Compile Include="Management\RankManager.cs" />
     <Compile Include="Management\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -136,6 +136,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AddUserViewModel.cs" />
     <Compile Include="ViewModels\RankManagementViewModel.cs" />
+    <Compile Include="ViewModels\SubMenusViewModel.cs" />
     <Compile Include="ViewModels\UserManagementViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2346,6 +2347,7 @@
     <Content Include="Views\Management\UserManagement.cshtml" />
     <Content Include="Views\Management\EditRank.cshtml" />
     <Content Include="Views\Management\EditUser.cshtml" />
+    <Content Include="Views\Shared\_MenuPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
