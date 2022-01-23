@@ -21,7 +21,6 @@ namespace Ems.Controllers
         { 
             base.Initialize(requestContext);
             var url = requestContext.HttpContext.Request.Url.AbsoluteUri;
-            SideMenu(url);
             CheckPermission(requestContext);
             LogUrl(url);
             
@@ -49,24 +48,30 @@ namespace Ems.Controllers
         private void CheckPermission(RequestContext context)
         {
 
-            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
-            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
-            try
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString().ToLower();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString().ToLower();
+            var Email = Session["Email"] ?? null;
+            UserManager userManager = new UserManager();
+            MenusManager menusManager = new MenusManager();
+            if(Email != null)
             {
-                var Email = Session["Email"] ?? null;
-                UserManager userManager = new UserManager();
-                MenusManager menusManager = new MenusManager();
-                var user = userManager.GetByParameter(x => x.Mail == Email);
-                var menu = menusManager.GetAllByParameter(x => x.Action == actionName && x.Controller == controllerName);
-                bool userHasAccess = menu.Where(x => x.UserId == user.Id).Count() > 0 ? true : false;
-                if (!userHasAccess && controllerName != "Base")
-                     new RedirectResult(Url.Action("Index", "Home")).ExecuteResult(this.ControllerContext);
-                    
-            }
-            catch (Exception ex)
-            {
+                try
+                {
+                    var user = userManager.GetByParameter(x => x.Mail == Email);
+                    var menu = menusManager.GetAllByParameter(x => x.Action == actionName && x.Controller == controllerName);
+                    bool userHasAccess = (controllerName == "home" || controllerName == "base" || actionName == "login" || actionName=="logout")
+                        ? true : (menu.Where(x => x.UserId == user.Id).Count() > 0 ? true : false);
+                    //Hem erişimi yok hem de üçünden biri değil hem de management permi yok.
+                    if (userHasAccess == false && user.AccessManagementPanel == false)
+                        new RedirectResult(Url.Action("Index", "Home")).ExecuteResult(this.ControllerContext);
+                }
+                catch (Exception ex)
+                {
+                    LogManager.GetInstance().Error(userManager.GetByParameter(x => x.Mail == Email).Id, Email.ToString(), null, ex.Message, ex.StackTrace, context.HttpContext.Request.Url.AbsoluteUri, Data.Model.Log.LogType.Generic);
 
+                }
             }
+            
         }
         protected override void OnException(ExceptionContext filterContext)
         {
@@ -107,6 +112,7 @@ namespace Ems.Controllers
                         });
                     }
                     Session["Menus"] = menus;
+                    Session["BoardUser"] = userName.AccessManagementPanel;
                     
                 }
                 catch (Exception ex)

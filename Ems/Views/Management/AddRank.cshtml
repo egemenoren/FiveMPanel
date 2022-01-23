@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<Ems.Data.Model.Jobs>
 @{
     ViewBag.Title = "AddRank";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -42,10 +42,23 @@
                                 <div class="form-group">
                                     <label>Meslek</label>
                                     <select class="form-control select2" name="Job" width="100%">
-                                        <option selected="selected">Doktor</option>
-                                        <option>Polis</option>
-                                        <option>Sheriff</option>
-                                        <option>State Polis</option>
+                                        @*<option selected="selected">Doktor</option>
+                                            <option>Polis</option>
+                                            <option>Sheriff</option>
+                                            <option>State Polis</option>*@
+                                        @foreach (var item in Model)
+                                        {
+                                            if (Model.First() == item)
+                                            {
+                                                <option selected>@item.JobName</option>
+                                            }
+                                            else
+                                            {
+                                                <option>@item.JobName</option>
+                                            }
+
+
+                                        }
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -67,11 +80,11 @@
     </section>
 </div>
 
-    @if(ViewBag.ErrMsg != null)
-            {
-                <script>
-                    
-                </script>
-            }
+@if (ViewBag.ErrMsg != null)
+{
+    <script>
+
+    </script>
+}
 
 

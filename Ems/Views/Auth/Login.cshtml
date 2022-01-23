@@ -29,7 +29,7 @@
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Erişim sağlamak için giriş yapın.</p>
 
-                <form action="/home/Login" method="post" >
+                <form action="/Auth/Login" method="post">
                     <div class="input-group mb-3">
                         <input type="email" class="form-control" placeholder="Email" name="Email">
                         <div class="input-group-append">
@@ -38,18 +38,18 @@
                             </div>
                         </div>
                     </div>
-                    @if(Session["User"] == null)
-            {
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Şifre" name="Password">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
+                    @if (Session["User"] == null)
+                    {
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" placeholder="Şifre" name="Password">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            }
-                    
+                    }
+
                     <div class="row">
                         <div class="col-8">
 

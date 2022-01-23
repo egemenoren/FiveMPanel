@@ -26,7 +26,7 @@ namespace Ems.Service.Management
             if (Filter != null)
             {
                 var entity = repo.Select(Filter);
-                return entity.First();
+                return entity.SingleOrDefault();
             }
             return null;
         }
@@ -60,7 +60,7 @@ namespace Ems.Service.Management
         {
             if(Filter != null)
             {
-                if(repo.Select(Filter) != null)
+                if(repo.Select(Filter).Count() > 0)
                 {
                     return true;
                 }

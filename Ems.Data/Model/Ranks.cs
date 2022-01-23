@@ -11,5 +11,6 @@ namespace Ems.Data.Model
         public int JobId { get; set; }
         public string RankName { get; set; }
         public bool AccessJobPanel { get; set; }
+        public byte HierarchyNo { get; set; }
     }
 }

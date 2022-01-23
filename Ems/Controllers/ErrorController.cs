@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace Ems.Controllers
 {
-    [Authorize]
+    
     public class ErrorController : BaseController
     {
         private LogManager _logManager;

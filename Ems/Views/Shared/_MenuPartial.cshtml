@@ -2,11 +2,13 @@
 
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <!-- Add icons to the links using the .nav-icon class
-        with font-awesome or any other icon font library -->
-        @if (Session["MenuPermission"] != null)
+        @{
+            var menuList = (List<Ems.ViewModels.SubMenusViewModel>)Session["Menus"];
+            var groupByMenu = menuList.GroupBy(x => x.MainMenuName).ToList();
+        }
+        @if ((bool)Session["BoardUser"])
         {
-            
+
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-user-lock"></i>
@@ -209,37 +211,33 @@
         }
         else
         {
-            //if (accessJobPanel == "True")
-            if (true)
+            if (Session["Menus"] != null)
             {
-                if (Session["Menus"] != null)
+                //var menuList = (List<Ems.ViewModels.SubMenusViewModel>)Session["Menus"];
+                //var groupByMenu = menuList.GroupBy(x=>x.MainMenuName).ToList();
+                foreach (var item in groupByMenu)
                 {
-                    var menuList = (List<Ems.ViewModels.SubMenusViewModel>)Session["Menus"];
-                    var groupByMenu = menuList.GroupBy(x=>x.MainMenuName).ToList();
-                    foreach (var item in groupByMenu)
-                    {
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-ambulance"></i>
-                                <p>
-                                    @item.Key
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                @foreach (var menus in menuList)
-                                {
-                                    <li class="nav-item">
-                                        <a href="../layout/top-nav.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon text-danger"></i>
-                                            <p>@menus.SubMenuName</p>
-                                        </a>
-                                    </li>
-                                }
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-ambulance"></i>
+                            <p>
+                                @item.Key
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @foreach (var menus in menuList)
+                            {
+                                <li class="nav-item">
+                                    <a href="../layout/top-nav.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon text-danger"></i>
+                                        <p>@menus.SubMenuName</p>
+                                    </a>
+                                </li>
+                            }
 
-                            </ul>
-                        </li>
-                    }
+                        </ul>
+                    </li>
                 }
                 switch ("a")
                 {

@@ -39,7 +39,7 @@ namespace Ems.Controllers
                     NameSurname = NameSurname,
                     JobId = JobId
                 });
-
+                ViewBag.Success = "Kullanıcı başarıyla eklendi";
 
             }
             catch (Exception ex)
@@ -117,7 +117,8 @@ namespace Ems.Controllers
         }
         public ActionResult AddRank()
         {
-            return View();
+           var model = jobManager.GetAll();
+            return View(model);
         }
         [HttpGet]
         public JsonResult GetRanks(string Job)
@@ -160,7 +161,7 @@ namespace Ems.Controllers
             return Json(modelList, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult AddRank(short HierarchyNo, string RankName, string Job, bool AccessJobPanel = false)
+        public ActionResult AddRank(byte HierarchyNo, string RankName, string Job, bool AccessJobPanel = false)
         {
             try
             {
@@ -168,23 +169,18 @@ namespace Ems.Controllers
                 rankManager = new RankManager();
                 jobManager = new JobManager();
                 var jobEntity = jobManager.GetAllByParameter(x => x.JobName == Job).FirstOrDefault();
-                if (rankManager.CheckIfExists(x => x.JobId == jobEntity.Id && x.RankName == RankName))
+                var rankEntity = rankManager.GetByParameter(x => x.JobId == jobEntity.Id && x.RankName == RankName);
+                if (rankEntity != null)
                 {
                     ViewBag.ErrMsg = "Bu departmana ait " + RankName + " isimli rank zaten mevcut.";
-                    return View();
+                    return View(jobManager.GetAll());
                 }
                 rankManager.Add(new Ranks
                 {
                     RankName = RankName,
                     JobId = jobEntity.Id,
                     AccessJobPanel = AccessJobPanel,
-                });
-                var rankEntity = rankManager.GetByParameter(x => x.RankName == RankName);
-                hierarchyManager.Add(new Hierarchy
-                {
-                    HierarchyRank = HierarchyNo,
-                    JobId = jobEntity.Id,
-                    RankId = rankEntity.Id
+                    HierarchyNo = HierarchyNo
                 });
                 ViewBag.Success = "Rank Başarıyla Eklendi!";
             }
@@ -192,7 +188,7 @@ namespace Ems.Controllers
             {
                 ViewBag.ErrMsg = ex.Message;
             }
-            return View();
+            return View(jobManager.GetAll());
         }
         public JsonResult RemoveUser(int Id)
         {
