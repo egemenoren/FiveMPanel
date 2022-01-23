@@ -12,6 +12,7 @@ namespace Ems.Data.Model.Log
         Logout = 2,
         Insert = 3,
         Update = 4,
-        Delete = 5
+        Delete = 5,
+        Generic = 6
     }
 }

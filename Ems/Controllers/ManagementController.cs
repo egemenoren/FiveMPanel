@@ -74,6 +74,7 @@ namespace Ems.Controllers
                     RankName = item.RankName,
                     JobName = jobEntity.JobName,
                     AccessJobPanel = item.AccessJobPanel
+                    
                 });
 
             }
@@ -105,7 +106,6 @@ namespace Ems.Controllers
                     };
                     listModel.Add(model);
                 }
-                return View(listModel);
             }
             catch (Exception ex)
             {

@@ -16,6 +16,5 @@ namespace Ems.Data.Model
         public int RankId { get; set; }
         public int JobId { get; set; }
         public bool AccessManagementPanel { get; set; } = false;
-        public Status Status { get; set; } = Status.Active;
     }
 }

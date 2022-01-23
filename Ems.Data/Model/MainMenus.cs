@@ -9,5 +9,6 @@ namespace Ems.Data.Model
     public class MainMenus:EmsBaseEntity
     {
         public string MenuName { get; set; }
+        public string Icon { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Ems.Data.Model.Log
 {
     public class Logs : EmsBaseEntity
     {
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public string Mail { get; set; }
         public string ValueEntered { get; set; }
         public string Exception { get; set; }

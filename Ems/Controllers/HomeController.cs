@@ -1,4 +1,5 @@
-﻿using Ems.Service.Management;
+﻿using Ems.Service.Logger;
+using Ems.Service.Management;
 using Ems.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,7 @@ namespace Ems.Controllers
                 MainMenusManager mainMenusManager = new MainMenusManager();
                 List<SubMenusViewModel> menus = new List<SubMenusViewModel>();
                 var permissions = menusManager.GetPermissions(userName.Id);
+                
                 foreach (var item in permissions)
                 {
                     var menuName = mainMenusManager.GetById(item.MainMenuId).MenuName;

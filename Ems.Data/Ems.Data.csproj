@@ -129,6 +129,18 @@
     <Compile Include="Migrations\202201191944411_keyChanges.designer.cs">
       <DependentUpon>202201191944411_keyChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201221037372_logs.cs" />
+    <Compile Include="Migrations\202201221037372_logs.designer.cs">
+      <DependentUpon>202201221037372_logs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201221112474_integer_log_nullable.cs" />
+    <Compile Include="Migrations\202201221112474_integer_log_nullable.designer.cs">
+      <DependentUpon>202201221112474_integer_log_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201222157466_changes1.cs" />
+    <Compile Include="Migrations\202201222157466_changes1.designer.cs">
+      <DependentUpon>202201222157466_changes1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Hierarchy.cs" />
     <Compile Include="Model\Jobs.cs" />
@@ -183,6 +195,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201191944411_keyChanges.resx">
       <DependentUpon>202201191944411_keyChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201221037372_logs.resx">
+      <DependentUpon>202201221037372_logs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201221112474_integer_log_nullable.resx">
+      <DependentUpon>202201221112474_integer_log_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201222157466_changes1.resx">
+      <DependentUpon>202201222157466_changes1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
