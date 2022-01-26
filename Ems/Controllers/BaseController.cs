@@ -1,4 +1,5 @@
-﻿using Ems.Service.Logger;
+﻿using Ems.Data.Model;
+using Ems.Service.Logger;
 using Ems.Service.Management;
 using Ems.ViewModels;
 using System;
@@ -13,6 +14,7 @@ namespace Ems.Controllers
 {
     public class BaseController : Controller
     {
+        public static Users userSession;
         public BaseController()
         {
             
@@ -21,6 +23,7 @@ namespace Ems.Controllers
         { 
             base.Initialize(requestContext);
             var url = requestContext.HttpContext.Request.Url.AbsoluteUri;
+            //SideMenu(url);
             CheckPermission(requestContext);
             LogUrl(url);
             
@@ -40,30 +43,72 @@ namespace Ems.Controllers
             }
             catch (Exception ex)
             {
-
+                LogManager.GetInstance().Error(null, null, null, ex.Message, ex.StackTrace, url, Data.Model.Log.LogType.Generic);
             }
             
             
         }
         private void CheckPermission(RequestContext context)
         {
-
+            
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString().ToLower();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString().ToLower();
             var Email = Session["Email"] ?? null;
             UserManager userManager = new UserManager();
-            MenusManager menusManager = new MenusManager();
+            SubMenusManager subMenusManager = new SubMenusManager();
+            MenusManager menus = new MenusManager();
             if(Email != null)
             {
                 try
                 {
                     var user = userManager.GetByParameter(x => x.Mail == Email);
-                    var menu = menusManager.GetAllByParameter(x => x.Action == actionName && x.Controller == controllerName);
-                    bool userHasAccess = (controllerName == "home" || controllerName == "base" || actionName == "login" || actionName=="logout")
-                        ? true : (menu.Where(x => x.UserId == user.Id).Count() > 0 ? true : false);
+                    if (userSession == null)
+                        userSession = user;
+                    var menu = subMenusManager.GetByParameter(x => x.Action == actionName && x.Controller == controllerName);
+                    var menuExists = menu != null ? true:false;
+                    var userHasSubmenu = menu != null ? menus.GetAllByParameter(x => x.UserId == user.Id && x.SubMenuId == menu.Id).Count() > 0 : false;
+                    bool userHasAccess = (controllerName == "home" || controllerName == "base" || actionName == "login" || actionName == "logout")
+                        ? true : userHasSubmenu; //(menu.Where(x => x.UserId == user.Id).Count() > 0 ? true : false);
                     //Hem erişimi yok hem de üçünden biri değil hem de management permi yok.
                     if (userHasAccess == false && user.AccessManagementPanel == false)
                         new RedirectResult(Url.Action("Index", "Home")).ExecuteResult(this.ControllerContext);
+                    else
+                    {
+                        MenusManager menusManager = new MenusManager();
+                        MainMenusManager mainMenusManager = new MainMenusManager();
+                        var permissions = new List<MenuPermissions>();
+                        if(user.AccessManagementPanel != true)
+                            permissions = menusManager.GetPermissions(user.Id, user.RankId, user.JobId);
+                        else
+                        {
+                            var entity = subMenusManager.GetAll();
+                            foreach (var item in entity)
+                            {
+                                permissions.Add(new MenuPermissions
+                                {
+                                    MainMenuId = item.MainMenuId,
+                                    SubMenuId = item.Id
+                                });
+                            }
+                        }
+                        List<SubMenusViewModel> menuList = new List<SubMenusViewModel>();
+                        foreach (var item in permissions)
+                        {
+                            var userMenu = subMenusManager.GetByParameter(x => x.Id == item.SubMenuId);
+                            var menuName = mainMenusManager.GetById(item.MainMenuId).MenuName;
+                            menuList.Add(new SubMenusViewModel
+                            {
+                                Action = userMenu.Action,
+                                Controller = userMenu.Controller,
+                                MainMenuId = item.MainMenuId,
+                                SubMenuId = item.Id,
+                                SubMenuName = userMenu.Name,
+                                MainMenuName = menuName,
+                                Icon = userMenu.Icon
+                            });
+                        }
+                        Session["Menus"] = menuList;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -83,47 +128,45 @@ namespace Ems.Controllers
             };
             filterContext.ExceptionHandled = true;
         }
-        [ChildActionOnly]
-        public ActionResult SideMenu(string url)
-        {
-            var Email = Session["Email"] ?? null;
-            List<SubMenusViewModel> menus = new List<SubMenusViewModel>();
-            if (Email != null)
-            {
-                UserManager userManager = new UserManager();
-                var userName = userManager.GetByParameter(x => x.Mail == Email);
-                try
-                {
-                    MenusManager menusManager = new MenusManager();
-                    MainMenusManager mainMenusManager = new MainMenusManager();
+        //public void SideMenu(string url)
+        //{
+        //    var Email = Session["Email"] ?? null;
+        //    List<SubMenusViewModel> menus = new List<SubMenusViewModel>();
+        //    if (Email != null)
+        //    {
+        //        UserManager userManager = new UserManager();
+        //        var userName = userManager.GetByParameter(x => x.Mail == Email);
+        //        try
+        //        {
+        //            MenusManager menusManager = new MenusManager();
+        //            MainMenusManager mainMenusManager = new MainMenusManager();
                     
-                    var permissions = menusManager.GetPermissions(userName.Id);
-                    foreach (var item in permissions)
-                    {
-                        var menuName = mainMenusManager.GetById(item.MainMenuId).MenuName;
-                        menus.Add(new SubMenusViewModel
-                        {
-                            Action = item.Action,
-                            Controller = item.Controller,
-                            MainMenuId = item.MainMenuId,
-                            SubMenuId = item.Id,
-                            SubMenuName = item.SubMenu,
-                            MainMenuName = menuName
-                        });
-                    }
-                    Session["Menus"] = menus;
-                    Session["BoardUser"] = userName.AccessManagementPanel;
+        //            var permissions = userName.AccessManagementPanel == true ? menusManager.GetAll() : menusManager.GetPermissions(userName.Id,userName.RankId,userName.JobId);
+        //                foreach (var item in permissions)
+        //                {
+        //                    var menuName = mainMenusManager.GetById(item.MainMenuId).MenuName;
+        //                    menus.Add(new SubMenusViewModel
+        //                    {
+        //                        Action = item.Action,
+        //                        Controller = item.Controller,
+        //                        MainMenuId = item.MainMenuId,
+        //                        SubMenuId = item.Id,
+        //                        SubMenuName = item.SubMenu,
+        //                        MainMenuName = menuName,
+        //                        Icon = item.Icon
+        //                    });
+        //                }
+        //            Session["Menus"] = menus;
                     
-                }
-                catch (Exception ex)
-                {
-                    LogManager.GetInstance().Error(userName.Id, Email.ToString(), null, ex.Message, ex.StackTrace, url, Data.Model.Log.LogType.Generic);
-                }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            LogManager.GetInstance().Error(userName.Id, Email.ToString(), null, ex.Message, ex.StackTrace, url, Data.Model.Log.LogType.Generic);
+        //        }
                 
 
-            }
-            return PartialView("_MenuPartial", menus);
-        }
+        //    }
+        //}
 
     }
 }

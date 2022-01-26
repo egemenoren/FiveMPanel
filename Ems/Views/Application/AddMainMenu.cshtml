@@ -1,0 +1,41 @@
+﻿@model Ems.ViewModels.AddUserViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="content-wrapper">
+    <div class="d-flex justify-content-center">
+        <div class="col-md-6 mt-5">
+            <form action="/Application/AddMainMenu" method="post">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Ana Menü Ekle</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-bars"></i></span>
+                            </div>
+                            <input type="text" class="form-control" name="MenuName" id="name" placeholder="Ana Menü İsmi" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-icons"></i></span>
+                            </div>
+                            <input type="text" class="form-control" name="Icon" placeholder="Icon class'ı giriniz." id="icon" required>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer text-right">
+                        <button type="submit" class="btn btn-info">Kaydet</button>
+                        <div class="btn btn-danger"><a href="/Home/Index" style="color:white">Vazgeç</a></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>

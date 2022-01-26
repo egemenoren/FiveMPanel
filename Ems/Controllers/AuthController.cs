@@ -64,19 +64,24 @@ namespace Ems.Controllers
                 jobManager = new JobManager();
                 MenusManager menusManager = new MenusManager();
                 MainMenusManager mainMenusManager = new MainMenusManager();
+                SubMenusManager subMenusManager = new SubMenusManager();
                 List<SubMenusViewModel> menus = new List<SubMenusViewModel>();
-                var permissions = menusManager.GetPermissions(userName.Id);
+
+                var permissions = menusManager.GetPermissions(userName.Id,userName.RankId,userName.JobId);
+                
 
                 foreach (var item in permissions)
                 {
+                    
                     var menuName = mainMenusManager.GetById(item.MainMenuId).MenuName;
+                    var visibleSubMenus = subMenusManager.GetByParameter(x => x.Id == item.SubMenuId);
                     menus.Add(new SubMenusViewModel
                     {
-                        Action = item.Action,
-                        Controller = item.Controller,
+                        Action = visibleSubMenus.Action,
+                        Controller = visibleSubMenus.Controller,
                         MainMenuId = item.MainMenuId,
                         SubMenuId = item.Id,
-                        SubMenuName = item.SubMenu,
+                        SubMenuName = visibleSubMenus.Name,
                         MainMenuName = menuName
                     });
                 }
@@ -94,6 +99,7 @@ namespace Ems.Controllers
                 var user = userManager.GetByParameter(x => x.Mail == Email);
                 FormsAuthentication.SignOut();
                 Session.Abandon();
+                userSession = null;
                 LogManager.GetInstance().Info(user.Id, Email.ToString(), null, "Logged Out User", "", Request.Url.AbsoluteUri, Data.Model.Log.LogType.Logout);
 
             }

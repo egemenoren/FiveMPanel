@@ -127,6 +127,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -2316,6 +2317,7 @@
     <Content Include="Content\AdminLTE\docs\license.md" />
     <Content Include="Content\AdminLTE\docs\upgrade-guide.md" />
     <Content Include="Content\AdminLTE\docs\_config.yml" />
+    <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -2351,6 +2353,8 @@
     <Content Include="Views\Management\EditUser.cshtml" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\Error\PageNotFound.cshtml" />
+    <Content Include="Views\Application\AddMainMenu.cshtml" />
+    <Content Include="Views\Application\AddSubMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

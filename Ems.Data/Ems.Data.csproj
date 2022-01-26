@@ -149,6 +149,7 @@
     <Compile Include="Model\Log\LogType.cs" />
     <Compile Include="Model\MainMenus.cs" />
     <Compile Include="Model\MenuPermissions.cs" />
+    <Compile Include="Model\SubMenus.cs" />
     <Compile Include="Model\Users.cs" />
     <Compile Include="Model\EmsBaseEntity.cs" />
     <Compile Include="Model\Examination.cs" />

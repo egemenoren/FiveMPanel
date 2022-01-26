@@ -26,5 +26,6 @@ namespace Ems.Data.Data
         public DbSet<MainMenus> MainMenus { get; set; }
         public DbSet<MenuPermissions> MenuPermissions { get; set; }
         public DbSet<Logs> Logs { get; set; }
+        public DbSet<SubMenus> SubMenus { get; set; }
     }
 }

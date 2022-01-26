@@ -10,9 +10,9 @@ namespace Ems.Service.Management
 {
     public class MenusManager : BaseManager<MenuPermissions>
     {
-        public List<MenuPermissions> GetPermissions(int userId)
+        public List<MenuPermissions> GetPermissions(int? userId,int rankId,int jobId)
         {
-            var entity = repo.Select(x => x.UserId == userId).ToList();
+            var entity = repo.Select(x => x.UserId == userId || x.RankId == rankId || x.JobId == jobId).ToList();
             List<MenuPermissions> list = new List<MenuPermissions>();
             foreach(var item in entity)
             {

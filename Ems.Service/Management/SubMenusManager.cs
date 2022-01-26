@@ -1,4 +1,5 @@
 ﻿using Ems.Data.Model;
+using Ems.Service.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Ems.Service.Management
 {
-    public class MainMenusManager : BaseManager<MainMenus>
+    public class SubMenusManager : BaseManager<SubMenus>
     {
-        
+
     }
 }
