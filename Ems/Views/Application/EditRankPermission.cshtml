@@ -1,0 +1,131 @@
+﻿@using Ems.Service.Management;
+@{
+    ViewBag.Title = "Edit Rank Permissions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="content-wrapper">
+    <div class="d-flex justify-content-center">
+        <div class="col-md-6 mt-5">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Rank Yetkilerini Düzenle</h3>
+                </div>
+                <div class="card-body">
+                    @{
+                        var menuList = (IEnumerable<Ems.ViewModels.SubMenusViewModel>)ViewBag.Menus;
+                        var groupByMenu = menuList.GroupBy(x => x.MainMenuId).ToList();
+                        var mainMenuList = new MainMenusManager().GetAll();
+                    }
+                    <div class="row">
+
+
+                        @foreach (var item in menuList.GroupBy(x => x.MainMenuId).OrderBy(x => x.Key))
+                        {
+                            <div class="col-md-6">
+
+
+                                <label>@item.Where(x => x.MainMenuId == item.Key).FirstOrDefault().MainMenuName</label>
+                                @{
+                                    var subMenus = new SubMenusManager().GetAllByParameter(x => x.MainMenuId == item.Key);
+                                }
+                                @foreach (var sub in subMenus)
+                                {
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" checked="@menuList.Where(x => x.SubMenuId == sub.Id).FirstOrDefault().HasPermission" id="@sub.Id">
+                                        <label class="form-check-label" for="@sub.Id">@sub.Name</label>
+                                    </div>
+                                }
+                            </div>
+                            <br />
+                        }
+                    </div>
+                    <!-- /input-group -->
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer text-right">
+                    <button id="submit" class="btn btn-info">
+                        <span id="spinner" hidden class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Kaydet
+                    </button>
+                    <div class="btn btn-danger"><a href="/Home/Index" style="color:white">Vazgeç</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<script>
+    var rank = '@Url.RequestContext.RouteData.Values["id"]';
+    //$("#submit").on('click', function () {
+    //    var params = [];
+
+    //    $(".form-check > input").each(function (i) {
+    //        var isChecked = $(this).is(':checked');
+    //        var hasError = false;
+    //        item = {};
+    //        item["rankId"] = rank;
+    //        item["subMenuId"] = $(this).attr('id');
+    //        item["hasPermission"] = isChecked;
+    //        params.push(item);
+
+
+    //        $.ajax({
+    //            type: 'POST',
+    //            url: '/Application/EditRankPermissions',
+    //            data: params,
+    //            success: function (data) {
+    //                if ($(".form-check > input").length === i + 1 && hasError == false) {
+    //                    swal("Nays hocam", data.Message, data.Status);
+    //                }
+    //            },
+    //            error: function () {
+    //                hasError = true;
+    //            }
+    //        })
+
+    //    })
+    //    params = JSON.stringify(params);
+    //    console.log(params);
+
+    //})
+    $("#submit").on('click', function () {
+        var model = [];
+        $(".form-check > input").each(function () {
+            var isChecked = $(this).is(':checked');
+            item = {};
+            item["RankId"] = rank;
+            item["subMenuId"] = $(this).attr('id');
+            item["hasPermission"] = isChecked;
+            model.push(item);
+        });
+
+        model = JSON.stringify(model);
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: true,
+            type: 'POST',
+            url: '/api/EditRankPermissions',
+            data: model,
+            beforeSend: function () {
+                $("#spinner").attr("hidden", false);
+                $("#submit").attr("disabled", true);
+            },
+            success: function (data) {
+                console.log(data)
+                swal("Nays Hocam", data.json.Message, data.json.Status);
+            },
+            error: function (data) {
+                swal("Aga bee", data.json.Message, data.json.Status);
+            },
+            complete: function (data) {
+                $("#spinner").attr("hidden", true);
+                $("#submit").attr("disabled", false);
+            }
+        })
+
+    })
+</script>
+

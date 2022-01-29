@@ -34,7 +34,7 @@ namespace Ems.Service.Utility
                 parameters[i] = item.GetValue(Entity, null) != null ? item.GetValue(Entity, null).ToString() : "";
                 i++;
             }
-            string result = String.Concat(parameters+" ");
+            string result = String.Concat(" "+parameters+" ");
             return result;
         }
     }

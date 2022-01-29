@@ -45,13 +45,16 @@
     <Compile Include="Logger\LogManager.cs" />
     <Compile Include="Management\BaseManager.cs" />
     <Compile Include="Management\HierarchyManager.cs" />
+    <Compile Include="Management\InsuranceManager.cs" />
     <Compile Include="Management\JobManager.cs" />
     <Compile Include="Management\MainMenusManager.cs" />
     <Compile Include="Management\MenusManager.cs" />
+    <Compile Include="Management\ProcessManager.cs" />
     <Compile Include="Management\RankManager.cs" />
     <Compile Include="Management\SubMenusManager.cs" />
     <Compile Include="Management\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\JsonFramework.cs" />
     <Compile Include="Utility\String.cs" />
   </ItemGroup>
   <ItemGroup>

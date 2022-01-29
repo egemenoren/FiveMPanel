@@ -10,5 +10,6 @@ namespace Ems.Data.Model
     {
         public string MenuName { get; set; }
         public string Icon { get; set; }
+        public short DisplayOrder { get; set; }
     }
 }

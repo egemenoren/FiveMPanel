@@ -26,18 +26,6 @@
                                     </button>
                                 </div>
                             </div>
-                            @*<div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-bars"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control" name="Name" id="name" placeholder="Ana Menü İsmi" required>
-                                </div>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-icons"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control" name="Icon" placeholder="Icon class'ı giriniz." id="icon" required>
-                                </div>*@
                             <div class="card-body">
                                 <label for="SubMenuName">Alt Menü Adı</label>
                                 <div class="input-group mb-3">
@@ -70,23 +58,21 @@
 
                                     <input type="text" class="form-control" id="icon" name="Icon" placeholder="Icon classını yazınız." required>
                                 </div>
+                                <label for="DisplayOrder">Sıralama</label>
+                                <div class="input-group mb-3">
+
+                                    <input type="text" class="form-control" id="DisplayOrder" name="DisplayOrder" placeholder="Sıralaması (Opsiyonel)">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="ToDisplay" name="ToDisplay" value="true" placeholder="Görüntülensin mi?">
+                                        <label class="form-check-label" for="ToDisplay">Görüntülensin mi?</label>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label>Bağlı Olduğu Ana Menü</label>
-
                                     <select class="form-control select2" id="mainMenus" name="MainMenuId" width="100%">
                                         <option selected="selected" id="chooseOne">Lütfen Birini Seçiniz.</option>
-
-                                        @*@foreach (var item in Model)
-                                            {
-                                                if (Model.First() == item)
-                                                {
-                                                    <option selected>@item.MainMenuName</option>
-                                                }
-                                                else
-                                                {
-                                                    <option>@item.MainMenuName</option>
-                                                }
-                                            }*@
                                     </select>
                                 </div>
                             </div>
@@ -111,7 +97,7 @@
         var html = "";
         $.ajax({
             type: "POST",
-            url: '/Application/GetMainMenus',
+            url: '/Api/GetMainMenus',
             dataType: 'json',
             async: true,
             success: function (data) {

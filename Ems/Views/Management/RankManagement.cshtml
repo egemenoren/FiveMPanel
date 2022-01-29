@@ -113,12 +113,13 @@
             job = "";
         var content = "";
         $.ajax({
-            url: '/Management/GetRanks' + job,
-            type: 'GET',
+            url: '/Api/GetRanks' + job,
+            type: 'POST',
             data: res,
             dataType: 'json',
             beforeSend: function () {
                 $('#tableBody').html("");
+                $(this).attr("disabled", true);
                 content = "";
                 $("table").hide();
                 $("#spinner").attr("hidden", false);
@@ -149,6 +150,7 @@
                 $('#tableBody').append(content);
 
                 $("#spinner").attr("hidden", true);
+                $(this).attr("disabled", false);
                 $("table").show();
 
             }
@@ -160,24 +162,22 @@
 
     function removeRank(Id) {
         var row = $("tr#" + Id);
-        Swal.fire({
-            title: 'Emin Misiniz?',
+        swal({
+            title: "Emin misin lan kardeeeş?",
             text: "Rank'ı Sileceksiniz! Bunun geri dönüşü yok.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Evet Sil',
-            cancelButtonText: 'Vazgeç',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Kullanıcı Silindi!',
-                    'Rank Artık Sonsuza dek buralarda yok.',
-                    'success',
-
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Rank silindi! Artık sonsuza dek buralarda yok", {
+                        icon: "success",
+                        title: "Başarılı"
+                    });
                     $.ajax({
-                        url: '/Management/RemoveRank?id=' + Id,
-                        type: 'GET',
+                        url: '/Api/RemoveRank?id=' + Id,
+                        type: 'POST',
                         beforeSend: function () {
 
                             $("table").hide();
@@ -189,18 +189,14 @@
                             $(row).remove();
                         }
                     })
-                )
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                Swal.fire(
-                    'İptal',
-                    'Rank Silinmedi!',
-                    'error'
-                )
-            }
-        })
+                } else {
+                    swal("Ohhh çok korkmuştum sileceksin diye!", {
+                        icon: "error",
+                        title: "Vazgeçildi"
+                    });
+                }
+            });
+      
     }
 </script>
 

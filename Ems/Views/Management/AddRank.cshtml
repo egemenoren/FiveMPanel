@@ -13,7 +13,7 @@
             <div class="d-flex justify-content-center">
                 <div class="col-md-8">
 
-                    <form action="/Management/AddRank" method="post">
+                    <form action="/Management/AddRank" method="post" id="addRankForm">
 
 
                         <!-- SELECT2 EXAMPLE -->
@@ -69,7 +69,10 @@
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-info">Kaydet</button>
+                                <button type="submit" class="btn btn-info">
+                                    <span id="spinner" hidden class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Kaydet
+                                </button>
                                 <div class="btn btn-danger"><a href="/Home/Index" style="color:white">Vazgeç</a></div>
                             </div>
                         </div>
@@ -79,12 +82,12 @@
         </div>
     </section>
 </div>
-
-@if (ViewBag.ErrMsg != null)
-{
-    <script>
-
-    </script>
-}
+<script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<script>
+    $("#addRankForm").submit(function (e) {
+        $("#spinner").attr("hidden", false);
+        $(".btn").attr("disabled", true);
+    });
+</script>
 
 

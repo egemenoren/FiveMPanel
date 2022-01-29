@@ -1,0 +1,74 @@
+﻿@model Ems.Data.Model.Insurance
+@{
+    ViewBag.Title = "AddInsurance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-center">
+                <div class="col-md-8">
+
+                    <form action="/EmsManagement/AddInsurance" method="post" id="addRankForm">
+
+
+                        <!-- SELECT2 EXAMPLE -->
+                        <div class="card card-success mt-5">
+                            <div class="card-header">
+                                <h3 class="card-title">Sigorta Ekle</h3>
+
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(x => x.PackageName, new { @class = "form-control", placeholder = "Paket Adını Girin", required = true })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(x => x.DiscountRateForBasicProcesses, new { @class = "form-control", placeholder = "Basit müdahale için indirim yüzdesi", required = true })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(x => x.DiscountRateForMediumProcesses, new { @class = "form-control", placeholder = "Orta müdahale için indirim yüzdesi", required = true })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(x => x.DiscountRateForCriticalProcesses, new { @class = "form-control", placeholder = "Ciddi müdahale için indirim yüzdesi", required = true })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(x => x.Credits, new { @class = "form-control", placeholder = "Kredi Miktarı", required = true })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(x => x.Price, new { @class = "form-control", placeholder = "Fiyat", required = true })
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <button type="submit" class="btn btn-info">
+                                    <span id="spinner" hidden class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Kaydet
+                                </button>
+                                <div class="btn btn-danger"><a href="/Home/Index" style="color:white">Vazgeç</a></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<script>
+    $("#addRankForm").submit(function (e) {
+        $("#spinner").attr("hidden", false);
+        $(".btn").attr("disabled", true);
+    });
+</script>
+

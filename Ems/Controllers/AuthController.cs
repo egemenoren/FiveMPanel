@@ -75,6 +75,8 @@ namespace Ems.Controllers
                     
                     var menuName = mainMenusManager.GetById(item.MainMenuId).MenuName;
                     var visibleSubMenus = subMenusManager.GetByParameter(x => x.Id == item.SubMenuId);
+                    if (visibleSubMenus == null)
+                        continue;
                     menus.Add(new SubMenusViewModel
                     {
                         Action = visibleSubMenus.Action,

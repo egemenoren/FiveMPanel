@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Kamu Panel FiveM ERP</title>
     <link rel="stylesheet" href="~/Content/AdminLTE/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -158,7 +158,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar"  data-slide="true" href="/Home/Logout" role="button">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="/Home/Logout" role="button">
                         <i class="fas fa-th-large"></i>
                     </a>
                 </li>
@@ -193,7 +193,7 @@
         </aside>
         @RenderBody()
     </div>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="~/Content/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -223,50 +223,42 @@
     <!-- Page specific script -->
     @if (ViewBag.ErrMsg != null)
     {
-        <script>
-            Swal.fire({
-                            title: 'Hoop!',
-                text: '@ViewBag.ErrMsg',
-                icon: 'error',
-                confirmButtonText: 'Ah be abi',
-                html: '@ViewBag.ErrMsg'
-            })
-        </script>
+<script>
+            swal({
+                title: "Haydaaa",
+                text: '@Html.Raw(ViewBag.ErrMsg)',
+                type: "error",
+                icon:"error",
+                confirmButtonText: "Sağlık olsun",
+                closeOnConfirm: false,
+                html: true
+            });
+</script>
     }
     @if (ViewBag.Success != null)
     {
         <script>
-            Swal.fire({
-                title: 'Başarılı',
-                text: '@ViewBag.Success',
-                icon: 'success',
-                confirmButtonText: 'Güzel',
-                html: '@ViewBag.Success'
-            })
+            swal({
+                title: "Nays Hocam",
+                text: '@Html.Raw(ViewBag.Success)',
+                type: "success",
+                icon:"success",
+                confirmButtonText: "Nayss",
+                closeOnConfirm: false,
+                html: true
+            });
         </script>
     }
     @if (TempData["Success"] != null)
     {
         <script>
-            Swal.fire({
-                title: 'Başarılı',
-                text: '@TempData["Success"].ToString()',
-                icon: 'success',
-                confirmButtonText: 'Güzel',
-                html: '@TempData["Success"].ToString()'
-            })
+            swal("Başarılı!", '@TempData["Success"].ToString()', "success");
         </script>
     }
     @if (TempData["ErrMsg"] != null)
     {
         <script>
-            Swal.fire({
-                title: 'Hoop!',
-                text: '@TempData["ErrMsg"].ToString()',
-                icon: 'error',
-                confirmButtonText: 'Ah be abi',
-                html: '@TempData["ErrMsg"].ToString()'
-            })
+           swal("Haydaa!", '@TempData["ErrMsg"].ToString()', "error");
         </script>
     }
     <script>
@@ -283,8 +275,8 @@
             $(".main-sidebar").css("height", "100vh");
         });
     </script>
-        
-                                                                                     
- 
+
+
+
 </body>
 </html>

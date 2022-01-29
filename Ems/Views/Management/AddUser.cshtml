@@ -96,8 +96,9 @@
             $("#rankSelect2").select2();
             var html = "";
             $.ajax({
-                url: '/Management/GetRanks?Job=' + jobName,
+                url: '/Api/GetRanks?Job=' + jobName,
                 dataType: 'json',
+                type:'POST',
                 async:true,
                 success: function (data) {
                     $.each(data, function (i, item) {

@@ -5,215 +5,215 @@
             var menuList = (List<Ems.ViewModels.SubMenusViewModel>)Session["Menus"];
             var groupByMenu = menuList.GroupBy(x => x.MainMenuId).ToList();
             var mainMenuList = new MainMenusManager().GetAll();
-            
+
         }
 
-            @if (Session["Menus"] != null)
+        @if (Session["Menus"] != null)
+        {
+            foreach (var item in groupByMenu)
             {
-                foreach (var item in groupByMenu)
-                {
-                    var mainMenu = mainMenuList.Where(x => x.Id == item.Key).FirstOrDefault();
-                    var icon = mainMenu.Icon;
-                    var mainMenuName = mainMenu.MenuName;
-                    
+                var mainMenu = mainMenuList.Where(x => x.Id == item.Key).FirstOrDefault();
+                var icon = mainMenu.Icon;
+                var mainMenuName = mainMenu.MenuName;
+
+                <li class="nav-item">
+                    <a onclick="javascript;:" href="javascript();" class="nav-link">
+                        <i class="nav-icon @icon"></i>
+                        <p>
+                            @mainMenuName
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @foreach (var menus in menuList.Where(x => x.MainMenuId == item.Key && x.Display == true).OrderBy(x=>x.DisplayNo))
+                        {
+                            <li class="nav-item">
+                                <a href="/@menus.Controller/@menus.Action" class="nav-link">
+                                    <i class="far fa-circle nav-icon @menus.Icon"></i>
+                                    <p>@menus.SubMenuName</p>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </li>
+            }
+            switch ("a")
+            {
+                case "Doktor":
                     <li class="nav-item">
-                        <a onclick="javascript;:" href="javascript();" class="nav-link">
-                            <i class="nav-icon @icon"></i>
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-ambulance"></i>
                             <p>
-                                @mainMenuName
+                                EMS Yönetim
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @foreach (var menus in menuList.Where(x=>x.MainMenuId == item.Key))
-                            {
-                                <li class="nav-item">
-                                    <a href="/@menus.Controller/@menus.Action" class="nav-link">
-                                        <i class="far fa-circle nav-icon @menus.Icon"></i>
-                                        <p>@menus.SubMenuName</p>
-                                    </a>
-                                </li>
-                            }
-
+                            <li class="nav-item">
+                                <a href="../layout/top-nav.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-danger"></i>
+                                    <p>Doktorlar</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../layout/top-nav-sidebar.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-danger"></i>
+                                    <p>Doktor İstatistikleri</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../layout/boxed.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-danger"></i>
+                                    <p>Rütbeler</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../layout/fixed-sidebar.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-danger"></i>
+                                    <p>Mesai Durumları</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../layout/fixed-sidebar-custom.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-danger"></i>
+                                    <p>Fatura Ücretleri</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
-                }
-                switch ("a")
-                {
-                    case "Doktor":
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-ambulance"></i>
-                                <p>
-                                    EMS Yönetim
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="../layout/top-nav.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-danger"></i>
-                                        <p>Doktorlar</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../layout/top-nav-sidebar.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-danger"></i>
-                                        <p>Doktor İstatistikleri</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../layout/boxed.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-danger"></i>
-                                        <p>Rütbeler</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../layout/fixed-sidebar.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-danger"></i>
-                                        <p>Mesai Durumları</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../layout/fixed-sidebar-custom.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-danger"></i>
-                                        <p>Fatura Ücretleri</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        break;
-                    case "Polis":
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-building"></i>
-                                <p>
-                                    PD Yönetim
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="../charts/chartjs.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-info"></i>
-                                        <p>Memurlar</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../charts/flot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-info"></i>
-                                        <p>Memur İstatistikleri</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../charts/inline.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-info"></i>
-                                        <p>Rütbeler</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../charts/uplot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-info"></i>
-                                        <p>Mesai Durumları</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../charts/uplot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-info"></i>
-                                        <p>Ceza Tutarları</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        break;
-                    case "Sheriff":
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-star"></i>
-                                <p>
-                                    SD Yönetim
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="../UI/general.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-warning"></i>
-                                        <p>Memurlar</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../UI/icons.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-warning"></i>
-                                        <p>Memur İstatistikleri</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../UI/buttons.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-warning"></i>
-                                        <p>Rütbeler</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../UI/sliders.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-warning"></i>
-                                        <p>Mesai Durumları</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../UI/modals.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-warning"></i>
-                                        <p>Ceza Tutarları</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        break;
-                    case "State Polis":
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-flag-usa"></i>
-                                <p>
-                                    SP Yönetim
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="../forms/general.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-info"></i>
-                                        <p>General Elements</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../forms/advanced.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-info"></i>
-                                        <p>Advanced Elements</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../forms/editors.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-info"></i>
-                                        <p>Editors</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../forms/validation.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon text-info"></i>
-                                        <p>Validation</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        break;
-                    default: break;
-                }
-
-
-
-
+                    break;
+                case "Polis":
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-building"></i>
+                            <p>
+                                PD Yönetim
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="../charts/chartjs.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-info"></i>
+                                    <p>Memurlar</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../charts/flot.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-info"></i>
+                                    <p>Memur İstatistikleri</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../charts/inline.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-info"></i>
+                                    <p>Rütbeler</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../charts/uplot.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-info"></i>
+                                    <p>Mesai Durumları</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../charts/uplot.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-info"></i>
+                                    <p>Ceza Tutarları</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    break;
+                case "Sheriff":
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-star"></i>
+                            <p>
+                                SD Yönetim
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="../UI/general.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-warning"></i>
+                                    <p>Memurlar</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../UI/icons.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-warning"></i>
+                                    <p>Memur İstatistikleri</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../UI/buttons.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-warning"></i>
+                                    <p>Rütbeler</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../UI/sliders.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-warning"></i>
+                                    <p>Mesai Durumları</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../UI/modals.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-warning"></i>
+                                    <p>Ceza Tutarları</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    break;
+                case "State Polis":
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-flag-usa"></i>
+                            <p>
+                                SP Yönetim
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="../forms/general.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-info"></i>
+                                    <p>General Elements</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../forms/advanced.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-info"></i>
+                                    <p>Advanced Elements</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../forms/editors.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-info"></i>
+                                    <p>Editors</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../forms/validation.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon text-info"></i>
+                                    <p>Validation</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    break;
+                default: break;
             }
-        
+
+
+
+
+        }
+
         <li class="nav-header">KULLANICI PANELİ</li>
         @*@if (checkIfManager == "True")*@
         @if (true)

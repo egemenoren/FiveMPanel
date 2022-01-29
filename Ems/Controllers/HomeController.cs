@@ -10,6 +10,7 @@ using System.Web.Security;
 
 namespace Ems.Controllers
 {
+    [Authorize]
     public class HomeController : BaseController
     {
         public HomeController()
