@@ -131,6 +131,7 @@
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\EmsController.cs" />
     <Compile Include="Controllers\EmsManagementController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -139,6 +140,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AddExaminationViewModel.cs" />
     <Compile Include="ViewModels\AddUserViewModel.cs" />
     <Compile Include="ViewModels\RankManagementViewModel.cs" />
     <Compile Include="ViewModels\SubMenusViewModel.cs" />
@@ -2365,6 +2367,9 @@
     <Content Include="Views\EmsManagement\DoctorList.cshtml" />
     <Content Include="Views\EmsManagement\RankManagement.cshtml" />
     <Content Include="Views\EmsManagement\UpdatePermissions.cshtml" />
+    <Content Include="Views\Ems\AddExamination.cshtml" />
+    <Content Include="Views\Ems\RegisterInsurance.cshtml" />
+    <Content Include="Views\EmsManagement\Bills.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -10,6 +10,8 @@ namespace Ems.Data.Model
     {
         public string NameSurname { get; set; }
         public int DoctorId { get; set; }
-        public int InsuranceId { get; set; }
+        public short InsuranceId { get; set; }
+        public short CreditsLeft { get; set; }
+        public DateTime ExpireDate { get; set; } = DateTime.Now.AddDays(14);
     }
 }

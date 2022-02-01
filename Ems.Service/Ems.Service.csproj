@@ -44,6 +44,7 @@
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LogManager.cs" />
     <Compile Include="Management\BaseManager.cs" />
+    <Compile Include="Management\ExaminationManager.cs" />
     <Compile Include="Management\HierarchyManager.cs" />
     <Compile Include="Management\InsuranceManager.cs" />
     <Compile Include="Management\JobManager.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Management\MenusManager.cs" />
     <Compile Include="Management\ProcessManager.cs" />
     <Compile Include="Management\RankManager.cs" />
+    <Compile Include="Management\RegisterInsuranceManager.cs" />
     <Compile Include="Management\SubMenusManager.cs" />
     <Compile Include="Management\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,6 +9,7 @@ namespace Ems.Data.Model
     public class Examination : EmsBaseEntity
     {
         public string NameSurname { get; set; }
+        public string Diagnosis { get; set; }
         public int ProcessId { get; set; }
         public int InsuranceId { get; set; }
         public bool HaveInsurance { get; set; }

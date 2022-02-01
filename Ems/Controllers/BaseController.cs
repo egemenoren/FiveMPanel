@@ -23,6 +23,12 @@ namespace Ems.Controllers
         protected override void Initialize(RequestContext requestContext)
         {
             base.Initialize(requestContext);
+            if (userSession == null && this.ControllerContext.RouteData.Values["controller"].ToString().ToLower() != "auth")
+            {
+                Session.Abandon();
+                new RedirectResult(Url.Action("Login", "Auth")).ExecuteResult(this.ControllerContext);
+            }
+                
             var url = requestContext.HttpContext.Request.Url.AbsoluteUri;
             CheckPermission(requestContext);
             LogUrl(url);
@@ -62,7 +68,6 @@ namespace Ems.Controllers
                 try
                 {
                     var user = userManager.GetByParameter(x => x.Mail == Email);
-
                     userSession = user;
                     var menu = subMenusManager.GetByParameter(x => x.Action == actionName && x.Controller == controllerName);
                     var menuExists = menu != null ? true : false;

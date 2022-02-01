@@ -330,5 +330,96 @@ namespace Ems.Controllers
                 return Json(new { json });
             }
         }
+        [HttpPost]
+        public JsonResult CheckIfHasInsurance(string NameSurname)
+        {
+            JsonFramework json = new JsonFramework();
+            try
+            {
+                RegisterInsuranceManager registerInsuranceManager = new RegisterInsuranceManager();
+                var insurance = registerInsuranceManager.GetByParameter(x => x.NameSurname == NameSurname && x.ExpireDate >= DateTime.Now);
+                if (insurance != null && insurance.CreditsLeft > 0)
+                {
+                    json.Status = "Success";
+                    json.Message = insurance.CreditsLeft + " Kredisi var.";
+                    json.Data = insurance;
+                    return Json(new { json });
+                }
+                else if (insurance != null && insurance.CreditsLeft <= 0)
+                {
+                    json.Status = "Unsuccess";
+                    json.Message = "Kredisi tükenmiş";
+                }
+                else
+                {
+                    json.Status = "Unsuccess";
+                    json.Message = "Sigortası Yok";
+                }
+                LogSuccess("checked");
+                return Json(new { json });
+            }
+            catch (Exception ex)
+            {
+                json.Status = "Unsuccess";
+                json.Message = "Hata Oluştu";
+                LogError("checked", ex);
+                return Json(new { json });
+            }
+
+        }
+        [HttpPost]
+        public JsonResult GetInsuranceById(int id)
+        {
+            JsonFramework json = new JsonFramework();
+            try
+            {
+                InsuranceManager insuranceManager = new InsuranceManager();
+                var entity = insuranceManager.GetById(id);
+                json.Data = entity;
+                json.Status = "Success";
+                json.Message = "Başarıyla Çekildi";
+                return Json(new { json });
+            }
+            catch (Exception ex)
+            {
+                json.Status = "Unsuccess";
+                json.Message = ex.Message;
+                return Json(new { json });
+            }
+
+
+        }
+        [HttpPost]
+        public JsonResult GetExaminationList()
+        {
+            JsonFramework json = new JsonFramework();
+            try
+            {
+                ExaminationManager examinationManager = new ExaminationManager();
+                UserManager userManager = new UserManager();
+                List<AddExaminationViewModel> list = new List<AddExaminationViewModel>();
+                var examinations = examinationManager.GetAll();
+                foreach (var item in examinations)
+                {
+                    list.Add(new AddExaminationViewModel
+                    {
+                        DoctorName = userManager.GetById(item.DoctorId).NameSurname,
+                        Diagnosis = item.Diagnosis,
+                        NameSurname = item.NameSurname,
+                        Price = item.Price,
+                        IsJudical = item.isJudical
+
+                    });
+                }
+                json.Data = list;
+                json.Message = "Success";
+                return Json(list);
+            }
+            catch
+            {
+                json.Message = "Unsuccess";
+                return Json(new { json });
+            }
+        }
     }
 }
