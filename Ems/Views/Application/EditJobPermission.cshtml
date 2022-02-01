@@ -10,7 +10,7 @@
         <div class="col-md-6 mt-5">
             <div class="card card-success">
                 <div class="card-header">
-                    <h3 class="card-title">Rank Yetkilerini Düzenle</h3>
+                    <h3 class="card-title">Meslek Yetkilerini Düzenle</h3>
                 </div>
                 <div class="card-body">
                     @{
@@ -21,7 +21,7 @@
                     <div class="row">
 
 
-                        @foreach (var item in menuList.Where(x => x.MainMenuName != "Application").GroupBy(x => x.MainMenuId).OrderBy(x => x.Key))
+                        @foreach (var item in menuList.Where(x=>x.MainMenuName != "Application").GroupBy(x => x.MainMenuId).OrderBy(x => x.Key))
                         {
                             <div class="col-md-6">
 
@@ -95,7 +95,7 @@
         $(".form-check > input").each(function () {
             var isChecked = $(this).is(':checked');
             item = {};
-            item["RankId"] = rank;
+            item["JobId"] = rank;
             item["subMenuId"] = $(this).attr('id');
             item["hasPermission"] = isChecked;
             model.push(item);
@@ -107,7 +107,7 @@
             dataType: 'json',
             async: true,
             type: 'POST',
-            url: '/api/EditRankPermissions',
+            url: '/api/EditJobPermissions',
             data: model,
             beforeSend: function () {
                 $("#spinner").attr("hidden", false);

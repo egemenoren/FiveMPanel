@@ -2370,6 +2370,7 @@
     <Content Include="Views\Ems\AddExamination.cshtml" />
     <Content Include="Views\Ems\RegisterInsurance.cshtml" />
     <Content Include="Views\EmsManagement\Bills.cshtml" />
+    <Content Include="Views\Application\EditJobPermission.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

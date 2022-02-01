@@ -41,5 +41,28 @@ namespace Ems.Service.Management
                 Update(entity);
             }
         }
+        public void EditJobPermissions(int userId, int jobId, int subMenuId, bool hasAccess)
+        {
+            var menusManager = new MenusManager();
+            var accesible = menusManager.GetByParameter(x => x.JobId == jobId && x.SubMenuId == subMenuId) != null ? true : false;
+            var mainMenu = new MainMenusManager().GetById(new SubMenusManager().GetById(subMenuId).MainMenuId);
+            if (accesible == false && hasAccess == true)
+            {
+                MenuPermissions perms = new MenuPermissions
+                {
+                    JobId = jobId,
+                    SubMenuId = subMenuId,
+                    MainMenuId = mainMenu.Id,
+                    CreatedBy = userId
+                };
+                Add(perms);
+            }
+            if (accesible == true && hasAccess == false)
+            {
+                var entity = menusManager.GetByParameter(x => x.SubMenuId == subMenuId && x.RankId == jobId);
+                entity.RankId = null;
+                Update(entity);
+            }
+        }
     }
 }

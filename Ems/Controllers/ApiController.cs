@@ -66,6 +66,27 @@ namespace Ems.Controllers
 
         }
         [HttpPost]
+        public JsonResult EditJobPermissions(List<SubMenusViewModel> model)
+        {
+            JsonFramework json = new JsonFramework();
+            try
+            {
+                foreach (var item in model)
+                {
+                    menusManager.EditJobPermissions(BaseController.userSession.Id, (int)item.JobId, item.SubMenuId, (bool)item.HasPermission);
+                }
+                json.Message = "Helalke";
+                LogSuccess("updated");
+                return Json(new { json }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                LogError("updated ", ex);
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+        [HttpPost]
         public JsonResult RemoveRank(int id)
         {
             try

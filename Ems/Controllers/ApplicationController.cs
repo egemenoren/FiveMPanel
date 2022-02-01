@@ -56,6 +56,30 @@ namespace Ems.Controllers
             ViewBag.Menus = subMenusViewModels;
             return View();
         }
+        public ActionResult EditJobPermission(int id)
+        {
+            // Submenülerin arasında rank'ın sahip olduğu bir yetki varsa seçili gelecek.
+            var submenus = subMenusManager.GetAll();
+            var menuPermissions = menusManager.GetAllByParameter(x => x.JobId == id);
+            List<SubMenusViewModel> subMenusViewModels = new List<SubMenusViewModel>();
+            foreach (var item in submenus)
+            {
+                var hasPermission = menusManager.GetByParameter(x => x.SubMenuId == item.Id && x.JobId == id) != null;
+                var itemMainMenu = mainMenusManager.GetByParameter(x => x.Id == item.MainMenuId);
+                subMenusViewModels.Add(new SubMenusViewModel
+                {
+                    Action = item.Action,
+                    Controller = item.Controller,
+                    HasPermission = hasPermission,
+                    SubMenuId = item.Id,
+                    SubMenuName = item.Name,
+                    MainMenuId = itemMainMenu.Id,
+                    MainMenuName = itemMainMenu.MenuName,
+                });
+            }
+            ViewBag.Menus = subMenusViewModels;
+            return View();
+        }
         public ActionResult EditPermissions()
         {
             return View();
