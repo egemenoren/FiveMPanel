@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Ems.Data.Model.Examination>
+@{
+    ViewBag.Title = "Faturalarım";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8 mt-3">
+                <div class="form-group py-3 col-md-3">
+                    <input class="form-control" id="search" placeholder="Ne arıycaksan burda ara qardesiw"/>
+                </div>
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Mesailerim</h3>
+                        
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <div hidden class="text-center my-3" id="spinner">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <table class="table text-center">
+                            <thead class="text-center">
+                                <tr>
+                                    <th scope="col">Hasta Adı</th>
+                                    <th scope="col">Tanı</th>
+                                    <th scope="col">Fiyat</th>
+                                    <th scope="col">Adli Vaka</th>
+                                    <th scope="col">Sigortası</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                @foreach (var item in Model)
+                                {
+                                    var isJudical = item.isJudical ? "Evet" : "Hayır";
+                                    var hasInsurance = item.HaveInsurance == true ? "Var" : "Yok";
+                                    <tr>
+                                        <td>@item.NameSurname</td>
+                                        <td>@item.Diagnosis</td>
+                                        <td>@item.Price</td>
+                                        <td>@isJudical</td>
+                                        <td>@hasInsurance</td>
+                                    </tr>
+                                }
+                                @if (Model.Count() == 0)
+                                {
+                                    <tr>
+                                        <td colspan="4">Gösterilecek veri bulunamadı</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<script>
+    var $rows = $('#tableBody tr');
+    $('#search').keyup(function () {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+        $rows.show().filter(function () {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
+</script>
+

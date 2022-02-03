@@ -33,23 +33,17 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Rank Adı</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1" name="RankName" placeholder="Rank Adı Girin" value="@Model.RankName" required>
+                                    <input type="text" class="form-control" id="RankName" name="RankName" placeholder="Rank Adı Girin" value="@Model.RankName" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Hiyerarşi Numarası</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1" name="HierarchyNo" value="@Model.HierarchyNo" placeholder="Hiyerarşi Numarası Girin En Düşük Rank 0 Olarak Girilecektir." required>
+                                    <input type="text" class="form-control" id="HierarchyNo" name="HierarchyNo" value="@Model.HierarchyNo" placeholder="Hiyerarşi Numarası Girin En Düşük Rank 0 Olarak Girilecektir." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="HourlySalary">Hiyerarşi Numarası</label>
+                                    <input type="text" class="form-control" id="HourlySalary" name="HourlySalary" value="@Model.HourlySalary" placeholder="Saatlik Maaş" required>
                                 </div>
                                 <input hidden name="RankId" value="@Model.Id" />
-                                <div class="form-group">
-                                    <label>Meslek</label>
-                                    <select class="form-control select2" name="Job" id="Job">
-                                        <option selected="selected">@Model.JobName</option>
-                                        <option>Doktor</option>
-                                        <option>Polis</option>
-                                        <option>Sheriff</option>
-                                        <option>State Polis</option>
-                                    </select>
-                                </div>
                                 <div class="form-group">
                                     <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                         <input type="checkbox" checked="@Model.AccessJobPanel" value="true" class="custom-control-input" name="AccessJobPanel" id="AccessJobPanel">
@@ -70,11 +64,6 @@
 </div>
 <script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $("#Job").on('select2:opening', function () {
-            $("option[selected='selected']").remove();
-        })
-    })
 </script>
 
 

@@ -53,6 +53,7 @@
     <Compile Include="Management\ProcessManager.cs" />
     <Compile Include="Management\RankManager.cs" />
     <Compile Include="Management\RegisterInsuranceManager.cs" />
+    <Compile Include="Management\ShiftManager.cs" />
     <Compile Include="Management\SubMenusManager.cs" />
     <Compile Include="Management\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

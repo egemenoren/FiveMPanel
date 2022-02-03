@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Ems.Service.Management
 {
-    public abstract class BaseManager<T> where T:EmsBaseEntity
+    public abstract class BaseManager<T> where T : EmsBaseEntity
     {
         internal readonly GenericRepository<T> repo;
         public BaseManager()
@@ -21,11 +21,11 @@ namespace Ems.Service.Management
             var entity = repo.Find(Id);
             return entity;
         }
-        public virtual T GetByParameter(Expression<Func<T,bool>> Filter= null) 
+        public virtual T GetByParameter(Expression<Func<T, bool>> Filter = null)
         {
             if (Filter != null)
             {
-                var entity = repo.Select(Filter);
+                var entity = repo.Select(Filter).Where(x=>x.Status == Status.Active);
                 return entity.SingleOrDefault();
             }
             return null;
@@ -42,25 +42,30 @@ namespace Ems.Service.Management
         }
         public virtual List<T> GetAll()
         {
-            var listEntities = repo.SelectAll();
+            var listEntities = repo.SelectAll().Where(x=>x.Status == Status.Active).ToList();
             return listEntities;
         }
         public virtual void Remove(int Id)
         {
-            repo.Remove(Id);
+            var entity = repo.Select(x => x.Id == Id).FirstOrDefault();
+            if (entity != null)
+            {
+                entity.Status = Status.InActive;
+                repo.Update(entity);
+            }
             repo.SaveChanges();
         }
-        public virtual List<T> GetAllByParameter(Expression<Func<T,bool>> Filter = null)
+        public virtual List<T> GetAllByParameter(Expression<Func<T, bool>> Filter = null)
         {
             if (Filter != null)
-                return repo.Select(Filter).ToList();
+                return repo.Select(Filter).Where(x=>x.Status == Status.Active).ToList();
             return null;
         }
-        public virtual bool CheckIfExists(Expression<Func<T,bool>> Filter = null)
+        public virtual bool CheckIfExists(Expression<Func<T, bool>> Filter = null)
         {
-            if(Filter != null)
+            if (Filter != null)
             {
-                if(repo.Select(Filter).Count() > 0)
+                if (repo.Select(Filter).Count() > 0)
                 {
                     return true;
                 }

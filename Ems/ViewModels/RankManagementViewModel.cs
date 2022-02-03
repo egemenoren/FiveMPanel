@@ -13,5 +13,6 @@ namespace Ems.ViewModels
         public bool AccessJobPanel { get; set; }
         public string JobName { get; set; }
         public short HierarchyNo { get; set; }
+        public int HourlySalary { get; set; }
     }
 }

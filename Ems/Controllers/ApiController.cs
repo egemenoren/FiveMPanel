@@ -442,5 +442,70 @@ namespace Ems.Controllers
                 return Json(new { json });
             }
         }
+        [HttpPost]
+        public JsonResult GetCurrentShiftStatus(int userId)
+        {
+            JsonFramework json = new JsonFramework();
+            ShiftManager shiftManager = new ShiftManager();
+            try
+            {
+                if (shiftManager.CheckUserHaveActiveShift(userId))
+                {
+                    json.Message = "On Shift";
+                    json.Data = shiftManager.GetUsersOpenShift(userId);
+                    
+                }
+                else
+                {
+                    json.Message = "Out Shift";
+                }
+            }
+            catch (Exception ex)
+            {
+                json.Message = ex.Message;
+            }
+            return Json(new { json });
+
+        }
+        [HttpPost]
+        public JsonResult StartShift(int userId)
+        {
+            JsonFramework json = new JsonFramework();
+            try
+            {
+                ShiftManager shiftManager = new ShiftManager();
+                shiftManager.Add(new Shifts
+                {
+                    UserId = userId,
+                    StartDate = DateTime.Now
+                });
+                json.Message = "Success";
+                
+            }
+            catch(Exception ex)
+            {
+                json.Message = ex.Message;
+            }
+            return Json(new { json });
+        }
+        [HttpPost]
+        public ActionResult EndShift(int userId)
+        {
+            JsonFramework json = new JsonFramework();
+            ShiftManager shiftManager = new ShiftManager();
+
+            try
+            {
+                var currentShift = shiftManager.GetUsersOpenShift(userId);
+                currentShift.EndDate = DateTime.Now;
+                shiftManager.Update(currentShift);
+                json.Message = "Success";
+            }
+            catch(Exception ex)
+            {
+                json.Message = ex.Message;
+            }
+            return Json(new { json });
+        }
     }
 }

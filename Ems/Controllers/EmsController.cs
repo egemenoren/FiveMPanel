@@ -54,6 +54,7 @@ namespace Ems.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult RegisterInsurance(RegisterInsurance model)
         {
             try
@@ -66,10 +67,34 @@ namespace Ems.Controllers
                 registerInsuranceManager.Add(model);
                 ViewBag.Success = "Sağlık sigortası başarıyla yapıldı";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.ErrMsg = ex.Message;
             }
+            return View();
+        }
+        public ActionResult MyShifts()
+        {
+            ShiftManager shiftManager = new ShiftManager();
+            var list = shiftManager.GetUsersShifts(userSession.Id).OrderByDescending(x=>x.Id);
+            return View(list);
+        }
+        public ActionResult MyBills()
+        {
+            try
+            {
+                ExaminationManager examinationManager = new ExaminationManager();
+                var examinations = examinationManager.GetAllByParameter(x => x.DoctorId == userSession.Id).OrderByDescending(x=>x.Id);
+                return View(examinations);
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+
+        }
+        public ActionResult Shift()
+        {
             return View();
         }
     }

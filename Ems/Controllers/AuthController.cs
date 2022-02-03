@@ -32,7 +32,7 @@ namespace Ems.Controllers
         {
             try
             {
-                var entity = userManager.GetByParameter(x => x.Mail == Email && x.Password == Password);
+                var entity = userManager.GetByParameter(x => x.Mail == Email && x.Password == Password && x.Status == Data.Model.Status.Active);
                 if (entity != null)
                 {
                     AddSession(Email);

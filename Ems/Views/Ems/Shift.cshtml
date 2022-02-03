@@ -1,0 +1,82 @@
+﻿@using Ems.Controllers;
+@{
+    ViewBag.Title = "Mesai İşlemleri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="content-wrapper">
+    <div class="d-flex justify-content-center">
+        <div class="col-md-6 mt-5">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Mesai İşlemleri</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group text-center">
+                        <div id="startShift" class="btn btn-success" style="display:none">
+                            Mesaiye Gir.
+                        </div>
+                        <div id="endShift" class="btn btn-danger" style="display:none">
+                            Mesaiden Çık.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<script>
+    function getShiftStatus() {
+        $.ajax({
+            type: "POST",
+            url: '/Api/GetCurrentShiftStatus?userId='+'@BaseController.userSession.Id' ,
+            dataType: 'json',
+            async: true,
+            success: function (data) {
+                if (data.json.Message == "Out Shift") {
+                    $("#startShift").show();
+                }
+                else {
+                    $("#endShift").show();
+                }
+
+            }
+        });
+    }
+    $("#startShift").on('click', function () {
+         $.ajax({
+            type: "POST",
+             url: '/Api/StartShift?userId='+'@BaseController.userSession.Id' ,
+            dataType: 'json',
+            async: true,
+            success: function (data) {
+                if (data.json.Message == "Success") {
+                    $("#startShift").hide();
+                    $("#endShift").show();
+                }
+
+            }
+        });
+    })
+    $("#endShift").on('click', function () {
+         $.ajax({
+            type: "POST",
+             url: '/Api/EndShift?userId='+'@BaseController.userSession.Id' ,
+            dataType: 'json',
+            async: true,
+            success: function (data) {
+                if (data.json.Message == "Success") {
+                    $("#startShift").show();
+                    $("#endShift").hide();
+                }
+            }
+        });
+    })
+    $(document).ready(function () {
+        getShiftStatus();
+    })
+</script>

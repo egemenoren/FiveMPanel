@@ -122,7 +122,7 @@ namespace Ems.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult AddRank(byte HierarchyNo, string RankName, string Job, bool AccessJobPanel = false)
+        public ActionResult AddRank(byte HierarchyNo, string RankName, string Job,int HourlySalary, bool AccessJobPanel = false)
         {
             try
             {
@@ -141,7 +141,8 @@ namespace Ems.Controllers
                     RankName = RankName,
                     JobId = jobEntity.Id,
                     AccessJobPanel = AccessJobPanel,
-                    HierarchyNo = HierarchyNo
+                    HierarchyNo = HierarchyNo,
+                    HourlySalary = HourlySalary
                 });
                 ViewBag.Success = "Rank Başarıyla Eklendi!";
             }
@@ -219,7 +220,7 @@ namespace Ems.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult EditRank(int RankId, string RankName, byte hierarchyNo, string Job, bool AccessJobPanel = false)
+        public ActionResult EditRank(int RankId, string RankName, byte HierarchyNo,int HourlySalary, string Job, bool AccessJobPanel = false)
         {
             try
             {
@@ -228,10 +229,10 @@ namespace Ems.Controllers
                 rankEntity.RankName = RankName;
                 rankEntity.AccessJobPanel = AccessJobPanel;
                 rankEntity.JobId = jobEntity.Id;
-                rankEntity.HierarchyNo = hierarchyNo;
+                rankEntity.HierarchyNo = HierarchyNo;
+                rankEntity.HourlySalary = HourlySalary;
                 rankManager.Update(rankEntity);
                 ViewBag.Success = "Rank Başarıyla Düzenlendi";
-                TempData["Success"] = "Rank Başarıyla Düzenlendi";
             }
             catch (Exception ex)
             {

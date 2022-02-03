@@ -33,19 +33,19 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Rank Adı</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1" name="RankName" placeholder="Rank Adı Girin" required>
+                                    <input type="text" class="form-control" id="RankName" name="RankName" placeholder="Rank Adı Girin" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Hiyerarşi Numarası</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1" name="HierarchyNo" placeholder="Hiyerarşi Numarası Girin En Düşük Rank 0 Olarak Girilecektir." required>
+                                    <label for="HierarchyNo">Hiyerarşi Numarası</label>
+                                    <input type="text" class="form-control" id="HierarchyNo" name="HierarchyNo" placeholder="Hiyerarşi Numarası Girin En Düşük Rank 0 Olarak Girilecektir." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="HourlySalary">Maaş</label>
+                                    <input type="text" class="form-control" id="HourlySalary" name="HourlySalary" placeholder="Saatlik alacağı maaşı" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Meslek</label>
                                     <select class="form-control select2" name="Job" width="100%">
-                                        @*<option selected="selected">Doktor</option>
-                                            <option>Polis</option>
-                                            <option>Sheriff</option>
-                                            <option>State Polis</option>*@
                                         @foreach (var item in Model)
                                         {
                                             if (Model.First() == item)

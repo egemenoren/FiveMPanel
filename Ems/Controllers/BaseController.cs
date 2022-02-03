@@ -23,9 +23,11 @@ namespace Ems.Controllers
         protected override void Initialize(RequestContext requestContext)
         {
             base.Initialize(requestContext);
-            if (userSession == null && this.ControllerContext.RouteData.Values["controller"].ToString().ToLower() != "auth")
+            if (Session["Email"] == null && this.ControllerContext.RouteData.Values["controller"].ToString().ToLower() != "auth")
             {
                 Session.Abandon();
+                FormsAuthentication.SignOut();
+                userSession = null;
                 new RedirectResult(Url.Action("Login", "Auth")).ExecuteResult(this.ControllerContext);
             }
                 
@@ -117,6 +119,9 @@ namespace Ems.Controllers
                                 DisplayNo = userMenu.DisplayOrder
                             });
                         }
+
+                        ViewBag.NameSurname = userSession.NameSurname;
+                        ViewBag.Rank = new RankManager().GetById(userSession.RankId).RankName;
                         Session["Menus"] = menuList;
                     }
                 }
@@ -131,15 +136,15 @@ namespace Ems.Controllers
                 Session["Menus"] = new List<SubMenusViewModel>();
             }
         }
-        protected override void OnException(ExceptionContext filterContext)
-        {
-            if (filterContext.ExceptionHandled)
-                return;
-            filterContext.Result = new ViewResult
-            {
-                ViewName = "~/Views/Shared/Error.cshtml"
-            };
-            filterContext.ExceptionHandled = true;
-        }
+        //protected override void OnException(ExceptionContext filterContext)
+        //{
+        //    if (filterContext.ExceptionHandled)
+        //        return;
+        //    filterContext.Result = new ViewResult
+        //    {
+        //        ViewName = "~/Views/Shared/Error.cshtml"
+        //    };
+        //    filterContext.ExceptionHandled = true;
+        //}
     }
 }
