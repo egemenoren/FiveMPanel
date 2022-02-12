@@ -143,12 +143,15 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Hierarchy.cs" />
+    <Compile Include="Model\Interventions.cs" />
     <Compile Include="Model\Jobs.cs" />
     <Compile Include="Model\Log\LogLevel.cs" />
     <Compile Include="Model\Log\Logs.cs" />
     <Compile Include="Model\Log\LogType.cs" />
     <Compile Include="Model\MainMenus.cs" />
     <Compile Include="Model\MenuPermissions.cs" />
+    <Compile Include="Model\PaidSalaries.cs" />
+    <Compile Include="Model\PayChecks.cs" />
     <Compile Include="Model\Shifts.cs" />
     <Compile Include="Model\SubMenus.cs" />
     <Compile Include="Model\Users.cs" />

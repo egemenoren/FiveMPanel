@@ -11,6 +11,7 @@ namespace Ems.ViewModels
         public string DoctorName { get; set; }
         public string NameSurname { get; set; }
         public string Diagnosis { get; set; }
+        public int[] Interventions { get; set; }
         public int ProcessId { get; set; }
         public double Price { get; set; }
         public bool IsJudical { get; set; }

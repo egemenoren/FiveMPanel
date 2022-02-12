@@ -47,15 +47,26 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="card-footer text-center">
+                        <div id="more" class="btn btn-info">Daha fazla</div>
+                    </div>
                     <!-- /.card-body -->
+
                 </div>
+                
             </div>
         </div>
     </section>
 </div>
 <script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
 <script>
+    var skipCount = 0;
+    var takeCount = 10;
 
+    $("#more").on('click', function () {
+        skipCount = skipCount + 10;
+        getList(skipCount);
+    });
     function removeItem(id) {
         var row = $("tr#" + id);
         var res = $(this).serialize();
@@ -107,21 +118,20 @@
     function getList() {
         var res = $(this).serialize();
         $.ajax({
-            url: '/Api/GetRanks?job=Doktor',
+            url: '/Api/GetRanks?job=Doktor&takeCount=' + takeCount + '&skipCount=' + skipCount,
             type: 'POST',
             data: res,
             dataType: 'json',
             beforeSend: function () {
-                $('#tableBody').html("");
                 $(this).attr("disabled", true);
                 content = "";
-                $("table").hide();
                 $("#spinner").attr("hidden", false);
             },
             success: function (response) {
 
                 if (response.length == 0) {
-                    $('#tableBody').html('<tr><td colspan="4" class="text-center">Gösterilecek veri bulunamadı</td></tr>');
+                    $('#tableBody').append('<tr><td colspan="12" class="text-center">Gösterilecek veri bulunamadı</td></tr>');
+                    $("#more").hide();
                 }
                 $.each(response, function (i, v) {
                     console.log(v);

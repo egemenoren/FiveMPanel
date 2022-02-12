@@ -10,6 +10,7 @@ namespace Ems.Data.Model
     {
         public string NameSurname { get; set; }
         public string Diagnosis { get; set; }
+        public string Interventions { get; set; }
         public int ProcessId { get; set; }
         public int InsuranceId { get; set; }
         public bool HaveInsurance { get; set; }

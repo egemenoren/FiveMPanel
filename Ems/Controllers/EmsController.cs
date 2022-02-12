@@ -23,6 +23,13 @@ namespace Ems.Controllers
         {
             try
             {
+                string intervention = "";
+                foreach (var interv in model.Interventions)
+                {
+                    var entity = new InterventionManager().GetById(interv);
+                    intervention = intervention == "" ? entity.Name : intervention + " + " + entity.Name;
+
+                }
                 RegisterInsuranceManager registerInsurance = new RegisterInsuranceManager();
                 var hasInsurance = registerInsurance.CheckHasValidInsurance(model.NameSurname);
                 if (hasInsurance != null)
@@ -33,14 +40,17 @@ namespace Ems.Controllers
                     HaveInsurance = hasInsurance != null,
                     Price = model.Price,
                     ProcessId = model.ProcessId,
-                    Diagnosis = model.Diagnosis + " + " + model.Extras,
+                    Diagnosis = model.Diagnosis,
                     DoctorId = userSession.Id,
                     InsuranceId = hasInsurance != null ? hasInsurance.Id : -1,
                     isJudical = model.IsJudical,
                     NameSurname = model.NameSurname,
                     OfficerName = model.OfficerNameSurname,
-                    CreatedBy = userSession.Id
+                    CreatedBy = userSession.Id,
+                    Interventions = intervention
+                    
                 });
+                new PayChecksManager().PayExtra(userSession.Id, model.Price);
                 ViewBag.Success = "Hastanın kaydını yapmışaz ağam O7";
             }
             catch (Exception ex)
@@ -54,7 +64,6 @@ namespace Ems.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult RegisterInsurance(RegisterInsurance model)
         {
             try
@@ -65,6 +74,7 @@ namespace Ems.Controllers
                 model.CreditsLeft = (short)insurancePackage.Credits;
                 model.DoctorId = BaseController.userSession.Id;
                 registerInsuranceManager.Add(model);
+                new PayChecksManager().PayExtra(userSession.Id, insurancePackage.Price);
                 ViewBag.Success = "Sağlık sigortası başarıyla yapıldı";
             }
             catch (Exception ex)

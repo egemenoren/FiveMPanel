@@ -32,7 +32,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-file-medical-alt"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="Insurance" name="Insurance" placeholder="Sigortası" required>
+                                    <input type="text" class="form-control" id="Insurance" name="Insurance" placeholder="Sigortası">
                                 </div>
                                 <label for="Diagnosis">Tanı</label>
                                 <div class="input-group mb-3">
@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <label>Müdahale Şekli</label>
-                                    <select class="form-control select2" id="ProcessId" name="ProcessId" width="100%"  required>
+                                    <select class="form-control select2" id="ProcessId" name="ProcessId" width="100%" required>
                                         <option selected="selected" id="chooseOne">Lütfen Birini Seçiniz.</option>
                                     </select>
                                 </div>
@@ -53,18 +53,24 @@
                                     </div>
                                     <input type="text" disabled class="form-control" id="ProcessPrice" name="ProcessPrice" placeholder="Sigortası" required>
                                 </div>
+                                <div class="form-group mb-3">
+                                    <label>Müdahaleler</label>
+                                    <select class="form-control select2" id="Interventions" name="Interventions" width="100%" multiple required>
+                                        <option selected="selected" id="chooseOne">Seçin.</option>
+                                    </select>
+                                </div>
                                 <label for="Action">Extralar</label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-compass"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="Extras" name="Extras" placeholder="Örneğin: Serum + Alçı" >
+                                    <input type="text" class="form-control" id="Extras" name="Extras" placeholder="Listede olmayan extra">
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="ExtraPrices" name="ExtraPrices" placeholder="Sadece fiyat örn: 750" >
+                                    <input type="text" class="form-control" id="ExtraPrices" name="ExtraPrices" placeholder="Sadece fiyat örn: 750">
                                 </div>
                                 <div id="Drug" class="form-group mb-3">
                                     <div class="form-check">
@@ -164,11 +170,36 @@
 
         });
     }
+    function getInterventions() {
+        $("#Interventions").find('option').text("Yükleniyor...");
+        $("#Interventions").select2();
+        var html = "";
+        $.ajax({
+            type: "POST",
+            url: '/Api/GetInterventions?takeCount=1000&skipCount=0',
+            dataType: 'json',
+            async: true,
+            success: function (data) {
+                $.each(data.Data, function (i, item) {
+                    html += "<option value=" + item.Id + " data-price=" + item.Price + ">" + item.Name + "</option>";
+                });
+            },
+            complete: function () {
+                $("#chooseOne").remove();
+                $("#Interventions").append(html);
+                $("#Interventions").select2();
+            }
+
+        });
+    }
 
     function calculatePrice() {
         var totalPrice = parseFloat($("#ProcessId").find("option[value='" + $("#ProcessId").val() + "']").attr("data-price"));
         var extras = $("#ExtraPrices").val() != '' ? parseFloat($("#ExtraPrices").val()) : 0;
         totalPrice += extras;
+        $.each($("#Interventions").find(":selected"), function (i, v) {
+            totalPrice += $(this).data('price');
+        })
         if ($("#ProcessId").val() == 1) {
             totalPrice = totalPrice * ((100 - discountRateForBasics) / 100);
         }
@@ -179,13 +210,13 @@
             totalPrice = totalPrice * ((100 - discountRateForCritical) / 100);
         }
         $("#Price").val(totalPrice);
+        console.log(totalPrice + " " + discountRateForBasics)
 
     }
 
     function calculate() {
         var NameSurname = $("#NameSurname").val();
         var InsurancePackage = "";
-        
         $.ajax({
             type: "POST",
             url: '/Api/CheckIfHasInsurance?NameSurname=' + NameSurname,
@@ -203,12 +234,16 @@
                         url: '/Api/GetInsuranceById?id=' + data.json.Data.InsuranceId,
                         dataType: 'json',
                         async: true,
+                        beforeSend: function () {
+                        },
                         success: function (data) {
-                            InsurancePackage = data.json.Data.PackageName;
-                            discountRateForCritical = data.json.Data.DiscountRateForCriticalProcesses;
-                            discountRateForMiddle = data.json.Data.DiscountRateForMediumProcesses;
-                            discountRateForBasics = data.json.Data.DiscountRateForBasicProcesses;
-
+                            if (data.json.Data != null) {
+                                InsurancePackage = data.json.Data.PackageName;
+                                discountRateForCritical = data.json.Data.DiscountRateForCriticalProcesses;
+                                discountRateForMiddle = data.json.Data.DiscountRateForMediumProcesses;
+                                discountRateForBasics = data.json.Data.DiscountRateForBasicProcesses;
+                                calculatePrice();
+                            } 
                         },
                         complete: function () {
                             $("#Insurance").attr("disabled", true);
@@ -219,6 +254,10 @@
                 }
                 else {
                     CreditsLeft = data.json.Message;
+                    discountRateForBasics = 0;
+                    discountRateForCritical = 0;
+                    discountRateForMiddle = 0;
+                    calculatePrice();
                     $("#Insurance").attr("disabled", true);
                     $("#Insurance").val(CreditsLeft);
                     $("#insuranceField").show('slow');
@@ -231,7 +270,9 @@
             }
 
         });
-    }
+
+        
+    } 
 
     $("#Form").submit(function (e) {
         $("#spinnerSubmit").attr("hidden", false);
@@ -241,6 +282,7 @@
     $(document).ready(function () {
         //getMainMenus();
         getProcesses();
+        getInterventions();
         $('#IsJudical').change(function () {
             if ($(this).is(':checked')) {
                 $("#officerName").show('slow');
@@ -254,7 +296,6 @@
         })
         $('#calculate').on('click', function () {
             calculate();
-            calculatePrice();
         })
         $("#NameSurname").on('keydown change', function () {
             $("#submit").attr('disabled', true);

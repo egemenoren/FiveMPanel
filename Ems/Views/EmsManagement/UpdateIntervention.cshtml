@@ -1,0 +1,58 @@
+﻿@model Ems.Data.Model.Interventions
+@{
+    ViewBag.Title = "Tedavi Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-center">
+                <div class="col-md-8">
+                    <form action="/EmsManagement/UpdateIntervention" method="post" id="Form">
+                        <!-- SELECT2 EXAMPLE -->
+                        <div class="card card-success mt-5">
+                            <div class="card-header">
+                                <h3 class="card-title">Müdahale Ekle</h3>
+
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @Html.HiddenFor(x=>x.Id)
+                            <div class="card-body">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Müdahale", required = true })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(x => x.Price, new { @class = "form-control", placeholder = "Fiyat Girin", required = true })
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <button type="submit" class="btn btn-info">
+                                    <span id="spinner" hidden class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Kaydet
+                                </button>
+                                <div class="btn btn-danger"><a href="/Home/Index" style="color:white">Vazgeç</a></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<script>
+    $("#Form").submit(function (e) {
+        $("#spinner").attr("hidden", false);
+        $(".btn").attr("disabled", true);
+    });
+</script>
+

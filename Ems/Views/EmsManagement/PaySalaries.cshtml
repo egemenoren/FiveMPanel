@@ -1,11 +1,11 @@
-﻿@using Ems.Controllers;
-@{
-    ViewBag.Title = "Mesailerim";
+﻿@{
+    ViewBag.Title = "Faturalarım";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="content-wrapper">
     <section class="content">
+        
         <div class="row d-flex justify-content-center">
             <div class="col-md-8 mt-3">
                 <div class="form-group py-3 col-md-3">
@@ -13,7 +13,7 @@
                 </div>
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">Mesailerim</h3>
+                        <h3 class="card-title">Primler</h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -21,6 +21,7 @@
                             </button>
                         </div>
                     </div>
+
                     <div class="card-body p-0">
                         <div hidden class="text-center my-3" id="spinner">
                             <div class="spinner-border" role="status">
@@ -30,51 +31,47 @@
                         <table class="table text-center">
                             <thead class="text-center">
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Giriş Tarihi</th>
-                                    <th scope="col">Çıkış Tarihi</th>
+                                    <th scope="col">Doktor Adı</th>
+                                    <th scope="col">Anlık Prim</th>
+                                    <th scope="col">Hasta Kaydı</th>
+                                    <th scope="col">Sigorta Kaydı</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
-                                
                             </tbody>
                         </table>
                     </div>
                     <!-- /.card-body -->
-                    <div class="card-footer text-center">
-                        <div id="more" class="btn btn-info">Daha fazla</div>
+                    <div class="row">
+                        <form method="post" action="/EmsManagement/PayAllSalaries" class="col-md-3">
+                            <div class="card-footer text-center">
+                                <button type="submit" class="btn btn-success add-rank">
+                                    Maaşları Dağıt
+                                </button>
+                                <div id="more" class="btn btn-info">Daha fazla</div>
+                            </div>
+                        </form>
                     </div>
+                    
                 </div>
             </div>
         </div>
     </section>
 </div>
 <script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
-<script src="~/Content/js/moment-with-locales.min.js"></script>
 <script>
-    var $rows = $('#tableBody tr');
-    $('#search').keyup(function () {
-        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-
-        $rows.show().filter(function () {
-            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-            return !~text.indexOf(val);
-        }).hide();
-    });
 
     var skipCount = 0;
     var takeCount = 10;
-    var userId = '@BaseController.userSession.Id';
-    var number = null;
+
     $("#more").on('click', function () {
         skipCount = skipCount + 10;
         getList(skipCount);
     });
-
     function getList(skipCount) {
         var res = $(this).serialize();
         $.ajax({
-            url: '/Api/GetMyShift?skipCount=' + skipCount + '&takeCount=' + takeCount + '&userId=' + userId,
+            url: '/Api/GetCurrentSalaries?skipCount=' + skipCount + '&takeCount=' + takeCount,
             type: 'POST',
             data: res,
             dataType: 'json',
@@ -90,15 +87,15 @@
                 }
                 var content = "";
                 $.each(response, function (i, v) {
-                    
-                    content += '<tr id="' + v.Id + '">';
-                    content += '<td>' + (number ?? "") + "" +(i + 1) + '</td>';
-                    content += '<td>' + moment(v.StartDate).format('lll');  + '</td>';
-                    content += '<td>' + moment(v.EndDate).format('lll'); + '</td>';
+                    console.log(v.isJudical);
+                    content += '<tr id="' + v.UserId + '">';
+                    content += '<td>' + v.UserName + '</td>';
+                    content += '<td>' + v.CurrentSalary + '</td>';
+                    content += '<td>' + v.ExaminationCount + '</td>';
+                    content += '<td>' + v.RegisterInsuranceCount + '</td>';
                     content += '</tr>';
 
                 })
-                number = number == null ? 1 : number + 1;
                 $('#tableBody').append(content);
                 $("#spinner").attr("hidden", true);
                 $(this).attr("disabled", false);
@@ -110,5 +107,15 @@
     }
     $(document).ready(function () {
         getList(skipCount);
+    })
+    var $rows = $('#tableBody tr');
+    $('#search').keyup(function () {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+        $rows.show().filter(function () {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
     });
 </script>
+

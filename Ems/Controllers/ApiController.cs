@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace Ems.Controllers
 {
+    [Authorize]
     public class ApiController : Controller
     {
         private MenusManager menusManager;
@@ -109,13 +110,13 @@ namespace Ems.Controllers
 
         }
         [HttpPost]
-        public ActionResult GetRanks(string Job)
+        public ActionResult GetRanks(int takeCount, int skipCount, string Job)
         {
             try
             {
                 List<RankManagementViewModel> modelList = new List<RankManagementViewModel>();
                 var jobEntity = jobManager.GetAllByParameter(x => x.JobName == Job).FirstOrDefault();
-                var jobList = Job != "" && Job != null ? rankManager.GetAllByParameter(x => x.JobId == jobEntity.Id) : rankManager.GetAll();
+                var jobList = Job != "" && Job != null ? rankManager.GetAllByParameter(x => x.JobId == jobEntity.Id).Skip(skipCount).Take(takeCount) : rankManager.GetAll();
                 if (Job != "" && Job != null)
                 {
                     foreach (var item in jobList)
@@ -171,11 +172,16 @@ namespace Ems.Controllers
             }
         }
         [HttpPost]
-        public ActionResult GetUsers()
+        public ActionResult GetUsers(int takeCount, int skipCount, string rankName)
         {
             try
             {
-                var userList = userManager.GetAll();
+                var userList = userManager.GetAll().Skip(skipCount).Take(takeCount);
+                if (!string.IsNullOrEmpty(rankName))
+                {
+                    var rankId = rankManager.GetByParameter(x => x.RankName == rankName).Id;
+                    userList = userList.Where(x => x.RankId == rankId);
+                }
                 List<UserManagementViewModel> model = new List<UserManagementViewModel>();
                 foreach (var item in userList)
                 {
@@ -279,12 +285,12 @@ namespace Ems.Controllers
 
         }
         [HttpPost]
-        public JsonResult GetDoctors()
+        public JsonResult GetDoctors(int takeCount, int skipCount)
         {
             try
             {
                 List<UserManagementViewModel> model = new List<UserManagementViewModel>();
-                var doctorList = userManager.GetAllByParameter(x => x.JobId == 2);
+                var doctorList = userManager.GetAllByParameter(x => x.JobId == 2).Skip(skipCount).Take(takeCount);
                 foreach (var item in doctorList)
                 {
                     var rank = rankManager.GetById(item.RankId);
@@ -411,7 +417,7 @@ namespace Ems.Controllers
 
         }
         [HttpPost]
-        public JsonResult GetExaminationList()
+        public JsonResult GetExaminationList(int takeCount, int skipCount)
         {
             JsonFramework json = new JsonFramework();
             try
@@ -419,7 +425,7 @@ namespace Ems.Controllers
                 ExaminationManager examinationManager = new ExaminationManager();
                 UserManager userManager = new UserManager();
                 List<AddExaminationViewModel> list = new List<AddExaminationViewModel>();
-                var examinations = examinationManager.GetAll();
+                var examinations = examinationManager.GetAll().Skip(skipCount).Take(takeCount);
                 foreach (var item in examinations)
                 {
                     list.Add(new AddExaminationViewModel
@@ -453,7 +459,7 @@ namespace Ems.Controllers
                 {
                     json.Message = "On Shift";
                     json.Data = shiftManager.GetUsersOpenShift(userId);
-                    
+
                 }
                 else
                 {
@@ -480,9 +486,9 @@ namespace Ems.Controllers
                     StartDate = DateTime.Now
                 });
                 json.Message = "Success";
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 json.Message = ex.Message;
             }
@@ -501,11 +507,107 @@ namespace Ems.Controllers
                 shiftManager.Update(currentShift);
                 json.Message = "Success";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 json.Message = ex.Message;
             }
             return Json(new { json });
+        }
+        [HttpPost]
+        public JsonResult GetInterventions(int takeCount, int skipCount)
+        {
+            JsonFramework json = new JsonFramework();
+            InterventionManager interventionManager = new InterventionManager();
+            try
+            {
+                var entity = interventionManager.GetAll().Skip(skipCount).Take(takeCount);
+                json.Data = entity;
+                json.Message = "success";
+            }
+            catch (Exception ex)
+            {
+                LogError("GetInterventions", ex);
+                json.Message = ex.Message;
+            }
+            return Json(json);
+
+        }
+        [HttpPost]
+        public JsonResult RemoveIntervention(int id)
+        {
+            try
+            {
+                InterventionManager interventionManager = new InterventionManager();
+                interventionManager.Remove(id);
+            }
+            catch (Exception ex)
+            {
+                LogError("RemoveIntervention", ex);
+            }
+            return Json("Ok");
+        }
+        [HttpPost]
+        public JsonResult GetMyBills(int userId, int takeCount, int skipCount)
+        {
+            try
+            {
+                var list = new ExaminationManager().GetAllByParameter(x => x.DoctorId == userId).Skip(skipCount).Take(takeCount);
+                return Json(list);
+            }
+            catch (Exception ex)
+            {
+                LogError("GetMyBills", ex);
+                return Json(null);
+            }
+        }
+        [HttpPost]
+        public JsonResult GetMyShift(int userId, int takeCount, int skipCount)
+        {
+            try
+            {
+                var list = new ShiftManager().GetAllByParameter(x => x.UserId == userId).Skip(skipCount).Take(takeCount);
+                return Json(list);
+            }
+            catch (Exception ex)
+            {
+                LogError("GetMyBills", ex);
+                return Json(null);
+            }
+        }
+        [HttpPost]
+        public JsonResult GetCurrentSalaries(int takeCount, int skipCount)
+        {
+            List<CurrentSalariesViewModel> currentSalaries = new List<CurrentSalariesViewModel>();
+            try
+            {
+                
+                var payChecksManager = new PayChecksManager();
+                var examinationManager = new ExaminationManager();
+                var lastPaidPaycheck = new PaidSalariesManagement();
+                var registerInsuranceManager = new RegisterInsuranceManager();
+                var doctorList = userManager.GetAllByParameter(x => x.JobId == 2).Skip(skipCount).Take(takeCount);
+                foreach (var doctor in doctorList)
+                {
+                    var doctorsPaycheck = payChecksManager.GetByParameter(x => x.UserId == doctor.Id && x.IsPaid == false);
+                    var lastPaid = lastPaidPaycheck.GetLastPaid(doctor.Id);
+                    var examinationCount = lastPaid != null ? examinationManager.GetAllByParameter(x => x.DoctorId == doctor.Id && x.CreateTime > lastPaid.CreateTime).Count() : examinationManager.GetAllByParameter(x => x.DoctorId == doctor.Id).Count();
+                    var insuranceCount = lastPaid != null ? registerInsuranceManager.GetAllByParameter(x => x.DoctorId == doctor.Id && x.CreateTime > lastPaid.CreateTime).Count() : registerInsuranceManager.GetAllByParameter(x => x.DoctorId == doctor.Id).Count();
+                    if (doctorsPaycheck == null)
+                        continue;
+                    currentSalaries.Add(new CurrentSalariesViewModel
+                    {
+                        CurrentSalary = doctorsPaycheck.CurrentPay,
+                        ExaminationCount = examinationCount,
+                        RegisterInsuranceCount = insuranceCount,
+                        UserName = doctor.NameSurname
+                    });
+                }
+            }
+            catch(Exception ex)
+            {
+                LogError("GetCurrentSalaries", ex);
+            }
+            return Json(currentSalaries);
         }
     }
 }

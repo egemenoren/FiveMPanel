@@ -28,5 +28,8 @@ namespace Ems.Data.Data
         public DbSet<Logs> Logs { get; set; }
         public DbSet<SubMenus> SubMenus { get; set; }
         public DbSet<Shifts> Shifts { get; set; }
+        public DbSet<Interventions> Interventions { get; set; }
+        public DbSet<PayChecks> PayChecks { get; set; }
+        public DbSet<PaidSalaries> PaidSalaries { get; set; }
     }
 }

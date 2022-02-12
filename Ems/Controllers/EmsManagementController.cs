@@ -165,6 +165,84 @@ namespace Ems.Controllers
         {
             return View();
         }
+        public ActionResult Interventions()
+        {
+            return View();
+        }
+        public ActionResult AddIntervention()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddIntervention(Interventions model)
+        {
+            try
+            {
+                InterventionManager interventionManager = new InterventionManager();
+                interventionManager.Add(model);
+                ViewBag.Success = "Helal sana doktorlar suat, başarıynan ekliyiverdin müdahaleyi.";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrMsg = ex.Message;
+            }
+            return View();
+        }
+        public ActionResult UpdateIntervention(int id)
+        {
+            InterventionManager interventionManager = new InterventionManager();
+            return View(interventionManager.GetById(id));
+        }
+        [HttpPost]
+        public ActionResult UpdateIntervention(Interventions model)
+        {
+            try
+            {
+                InterventionManager interventionManager = new InterventionManager();
+                interventionManager.Update(model);
+                ViewBag.Success = "Helal sana doktorlar suat, başarıynan düzenliyiverdin müdahaleyi.";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrMsg = ex.Message;
+            }
+            return View();
+        }
+        public ActionResult PaySalaries()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult PayAllSalaries()
+        {
+            try
+            {
+                var doctors = new UserManager().GetAllByParameter(x => x.JobId == 2);
+                double total = 0;
+                var payCheckManager = new PayChecksManager();
+                var paidSalariesManager = new PaidSalariesManagement();
+                foreach (var doctor in doctors)
+                {
+                    var doctorsPaycheck = payCheckManager.GetByParameter(x => x.UserId == doctor.Id && x.IsPaid == false);
+                    doctorsPaycheck.IsPaid = true;
+                    total += doctorsPaycheck.CurrentPay;
+                    payCheckManager.Update(doctorsPaycheck);
+                    paidSalariesManager.Add(new PaidSalaries
+                    {
+                        UserId = doctor.Id,
+                        Salary = doctorsPaycheck.CurrentPay,
+                        CreatedBy = userSession.Id
+                    });
+                }
+                TempData["Success"] = "Lan batıcaz amk sikicem bu doktorları da. Neyse aga başarıyla verdik maaşları.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrMsg"] = "Agga be bişiler oldu ama anlamadım aha hata mesajı bu " + ex.Message;
+            }
+            return RedirectToAction("PaySalaries");
+        }
+
     }
 
 

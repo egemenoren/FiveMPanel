@@ -47,9 +47,12 @@
     <Compile Include="Management\ExaminationManager.cs" />
     <Compile Include="Management\HierarchyManager.cs" />
     <Compile Include="Management\InsuranceManager.cs" />
+    <Compile Include="Management\InterventionManager.cs" />
     <Compile Include="Management\JobManager.cs" />
     <Compile Include="Management\MainMenusManager.cs" />
     <Compile Include="Management\MenusManager.cs" />
+    <Compile Include="Management\PaidSalariesManagement.cs" />
+    <Compile Include="Management\PayChecksManager.cs" />
     <Compile Include="Management\ProcessManager.cs" />
     <Compile Include="Management\RankManager.cs" />
     <Compile Include="Management\RegisterInsuranceManager.cs" />
