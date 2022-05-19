@@ -210,7 +210,16 @@
             totalPrice = totalPrice * ((100 - discountRateForCritical) / 100);
         }
         $("#Price").val(totalPrice);
-        console.log(totalPrice + " " + discountRateForBasics)
+        swal({
+            html: true,
+            title: "Hesaplandı",
+            text: "Hamdi beyin teklifi tamı tamına $" + totalPrice,
+            type: "success",
+            icon:"success",
+            confirmButtonText: "Maşallah aq",
+            closeOnConfirm: false
+            
+        });
 
     }
 
@@ -243,7 +252,7 @@
                                 discountRateForMiddle = data.json.Data.DiscountRateForMediumProcesses;
                                 discountRateForBasics = data.json.Data.DiscountRateForBasicProcesses;
                                 calculatePrice();
-                            } 
+                            }
                         },
                         complete: function () {
                             $("#Insurance").attr("disabled", true);
@@ -271,8 +280,8 @@
 
         });
 
-        
-    } 
+
+    }
 
     $("#Form").submit(function (e) {
         $("#spinnerSubmit").attr("hidden", false);

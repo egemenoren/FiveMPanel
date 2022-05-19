@@ -224,6 +224,8 @@ namespace Ems.Controllers
                 foreach (var doctor in doctors)
                 {
                     var doctorsPaycheck = payCheckManager.GetByParameter(x => x.UserId == doctor.Id && x.IsPaid == false);
+                    if (doctorsPaycheck == null)
+                        continue;
                     doctorsPaycheck.IsPaid = true;
                     total += doctorsPaycheck.CurrentPay;
                     payCheckManager.Update(doctorsPaycheck);

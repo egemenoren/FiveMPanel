@@ -504,6 +504,7 @@ namespace Ems.Controllers
             {
                 var currentShift = shiftManager.GetUsersOpenShift(userId);
                 currentShift.EndDate = DateTime.Now;
+                currentShift.Fix = false;
                 shiftManager.Update(currentShift);
                 json.Message = "Success";
             }

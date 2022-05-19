@@ -80,12 +80,11 @@
 </div>
 <script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
 <script>
-
     $(".rank").on("click", function (event) {
         var res = $(this).serialize();
         var content = "";
         $.ajax({
-            url: '/Api/GetRanks',
+            url: '/Api/GetRanks?skipCount=' + skipCount+'&takeCount=100&Job=Doktor',
             type: 'POST',
             data: res,
             dataType: 'json',

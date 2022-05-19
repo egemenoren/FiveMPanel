@@ -90,7 +90,7 @@ namespace Ems.Controllers
                 Session["Menus"] = menus;
                 Session["Email"] = userName.Mail;
                 userSession = userName;
-                FormsAuthentication.SetAuthCookie(userName.NameSurname, false);
+                FormsAuthentication.SetAuthCookie(userName.NameSurname, true);
             }
 
         }

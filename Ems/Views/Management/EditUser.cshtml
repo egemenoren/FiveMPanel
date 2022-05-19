@@ -122,8 +122,9 @@
             jobName = jobName == "Lütfen Birini Seçiniz." ? "" : jobName
             $('#rankSelect2').select2({
                 ajax: {
-                    url: '/Management/GetRanks?Job=' + jobName,
+                    url: '/Api/GetRanks?Job=' + jobName + '&skipCount=0&takeCount=1000',
                     dataType: 'json',
+                    type: 'POST',
                     processResults: function (data) {
                         return {
                             results: $.map(data, function (item) {

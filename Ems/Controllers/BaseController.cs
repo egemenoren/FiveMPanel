@@ -30,7 +30,6 @@ namespace Ems.Controllers
                 userSession = null;
                 new RedirectResult(Url.Action("Login", "Auth")).ExecuteResult(this.ControllerContext);
             }
-                
             var url = requestContext.HttpContext.Request.Url.AbsoluteUri;
             CheckPermission(requestContext);
             LogUrl(url);

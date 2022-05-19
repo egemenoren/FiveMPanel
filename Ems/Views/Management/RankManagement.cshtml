@@ -104,8 +104,9 @@
 </div>
 <script src="~/Content/AdminLTE/plugins/jquery/jquery.min.js"></script>
 <script>
-
+    
     $(".job").on("click", function (event) {
+        var skipCount = 0;
         var res = $(this).serialize();
         var jobName = $(this).attr("value");
         var job = "?job=" + jobName;
@@ -113,7 +114,7 @@
             job = "";
         var content = "";
         $.ajax({
-            url: '/Api/GetRanks' + job,
+            url: '/Api/GetRanks' + job + '&skipCount=' + skipCount +'&takeCount=100',
             type: 'POST',
             data: res,
             dataType: 'json',

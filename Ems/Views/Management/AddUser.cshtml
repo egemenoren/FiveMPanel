@@ -96,7 +96,7 @@
             $("#rankSelect2").select2();
             var html = "";
             $.ajax({
-                url: '/Api/GetRanks?Job=' + jobName,
+                url: '/Api/GetRanks?Job=' + jobName+'&skipCount=0&takeCount=1000',
                 dataType: 'json',
                 type:'POST',
                 async:true,
